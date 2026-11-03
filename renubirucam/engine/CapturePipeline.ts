@@ -10,53 +10,63 @@ export interface CaptureResult {
 
 /**
  * Mengambil foto langsung dari sensor kamera native hardware
- * dan menyimpannya ke galeri perangkat
+ * dan menyimpannya secara permanen ke Galeri HP Android
  */
 export async function takeAndSaveCameraPhoto(
   cameraRef: React.RefObject<any>
 ): Promise<CaptureResult> {
   try {
     if (!cameraRef.current) {
-      return { success: false, error: 'Kamera tidak siap' };
+      return { success: false, error: 'Sensor kamera belum siap. Coba lagi dalam 1 detik.' };
     }
 
-    // 1. Ambil foto resolusi penuh dari sensor kamera
+    // 1. Minta atau verifikasi izin akses penyimpanan/galeri HP
+    let perm = await MediaLibrary.getPermissionsAsync();
+    if (!perm.granted) {
+      perm = await MediaLibrary.requestPermissionsAsync();
+    }
+
+    if (!perm.granted) {
+      return {
+        success: false,
+        error: 'Izin akses galeri belum diizinkan. Harap izinkan akses media pada pop-up HP Anda.',
+      };
+    }
+
+    // 2. Ambil foto resolusi penuh dari sensor kamera hardware
     const photo = await cameraRef.current.takePictureAsync({
       quality: 0.95,
       skipProcessing: false,
     });
 
     if (!photo?.uri) {
-      return { success: false, error: 'Gagal mengambil gambar dari sensor' };
+      return { success: false, error: 'Sensor kamera tidak menghasilkan berkas gambar.' };
     }
 
-    // 2. Minta izin akses galeri
-    const permission = await MediaLibrary.requestPermissionsAsync();
-    if (!permission.granted) {
-      return {
-        success: true, // foto tetap terambil dalam cache
-        uri: photo.uri,
-        error: 'Izin galeri belum diberikan',
-      };
-    }
+    // 3. Simpan langsung ke MediaStore Galeri Android menggunakan createAssetAsync
+    const asset = await MediaLibrary.createAssetAsync(photo.uri);
 
-    // 3. Simpan ke galeri menggunakan metode universal Android (saveToLibraryAsync / createAssetAsync)
+    // 4. Masukkan ke album khusus "Renu Biru Cam" agar rapi dan mudah ditemukan
     try {
-      await MediaLibrary.saveToLibraryAsync(photo.uri);
+      const album = await MediaLibrary.getAlbumAsync('Renu Biru Cam');
+      if (album == null) {
+        await MediaLibrary.createAlbumAsync('Renu Biru Cam', asset, false);
+      } else {
+        await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
+      }
     } catch {
-      // Fallback createAsset jika saveToLibrary tidak didukung versi OS tertentu
-      await MediaLibrary.createAssetAsync(photo.uri);
+      // Pada Android 10+ Scoped Storage, asset sudah otomatis tampil di tab Foto/DCIM
     }
 
     return {
       success: true,
-      uri: photo.uri,
+      uri: asset.uri,
     };
   } catch (err: any) {
-    console.log('Info take photo:', err?.message || err);
+    console.log('Capture exception:', err?.message || err);
     return {
       success: false,
-      error: err?.message || 'Gagal menyimpan foto',
+      error: err?.message || 'Terjadi kesalahan saat memproses foto.',
     };
   }
 }
@@ -72,39 +82,46 @@ export async function captureAndSaveAnalogPhoto(
       return { success: false, error: 'View reference tidak tersedia' };
     }
 
-    // 1. Snapshot render komposit dengan filter dan bingkai
+    let perm = await MediaLibrary.getPermissionsAsync();
+    if (!perm.granted) {
+      perm = await MediaLibrary.requestPermissionsAsync();
+    }
+
+    if (!perm.granted) {
+      return {
+        success: false,
+        error: 'Izin galeri belum diberikan',
+      };
+    }
+
     const uri = await captureRef(viewRef, {
       format: 'jpg',
       quality: 0.95,
       result: 'tmpfile',
     });
 
-    // 2. Cek izin penyimpanan galeri
-    const permission = await MediaLibrary.requestPermissionsAsync();
-    if (!permission.granted) {
-      return {
-        success: true,
-        uri,
-        error: 'Izin galeri belum diberikan',
-      };
-    }
+    const asset = await MediaLibrary.createAssetAsync(uri);
 
-    // 3. Simpan ke roll kamera galeri
     try {
-      await MediaLibrary.saveToLibraryAsync(uri);
+      const album = await MediaLibrary.getAlbumAsync('Renu Biru Cam');
+      if (album == null) {
+        await MediaLibrary.createAlbumAsync('Renu Biru Cam', asset, false);
+      } else {
+        await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
+      }
     } catch {
-      await MediaLibrary.createAssetAsync(uri);
+      // Fallback
     }
 
     return {
       success: true,
-      uri,
+      uri: asset.uri,
     };
   } catch (err: any) {
-    console.log('Info capture view:', err?.message || err);
+    console.log('Capture view exception:', err?.message || err);
     return {
       success: false,
-      error: err?.message || 'Gagal menyimpan foto',
+      error: err?.message || 'Gagal menyimpan hasil cetak',
     };
   }
 }

@@ -10,6 +10,7 @@ import {
   Animated,
 } from 'react-native';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
+import * as MediaLibrary from 'expo-media-library';
 import { Colors } from '../constants/Colors';
 import { Typography } from '../constants/Typography';
 import { ShutterButton } from '../components/ShutterButton';
@@ -27,6 +28,7 @@ interface CameraScreenProps {
 
 export function CameraScreen({ selectedCamera, onCameraSwitch }: CameraScreenProps) {
   const [permission, requestPermission] = useCameraPermissions();
+  const [mediaPermission, requestMediaPermission] = MediaLibrary.usePermissions();
   const [facing, setFacing] = useState<CameraType>('back');
   const [frameCount, setFrameCount] = useState(18);
   const [timerMode, setTimerMode] = useState<0 | 3 | 5 | 10>(0);
@@ -41,6 +43,11 @@ export function CameraScreen({ selectedCamera, onCameraSwitch }: CameraScreenPro
   const cameraRef = useRef<any>(null);
   const viewfinderRef = useRef<any>(null);
   const shutterFlashAnim = useRef(new Animated.Value(0)).current;
+
+  const requestAllPermissions = async () => {
+    await requestPermission();
+    await requestMediaPermission();
+  };
 
   // Re-generate surprise when user switches camera
   useEffect(() => {
@@ -93,29 +100,31 @@ export function CameraScreen({ selectedCamera, onCameraSwitch }: CameraScreenPro
 
     try {
       const res = await takeAndSaveCameraPhoto(cameraRef);
-      const nextFrame = frameCount >= 36 ? 1 : frameCount + 1;
-      setFrameCount(nextFrame);
-
-      // Generate elemen kejutan baru untuk jepretan berikutnya
-      const nextSurprise = generateSurprise(selectedCamera);
-      setSurprise(nextSurprise);
 
       if (res.success) {
+        const nextFrame = frameCount >= 36 ? 1 : frameCount + 1;
+        setFrameCount(nextFrame);
+
+        // Generate elemen kejutan baru untuk jepretan berikutnya
+        const nextSurprise = generateSurprise(selectedCamera);
+        setSurprise(nextSurprise);
+
         Alert.alert(
-          '📸 Jepretan Tersimpan!',
-          `Emulsi ${selectedCamera.name} berhasil disimpan ke rol galeri.\n` +
+          '📸 Foto Tersimpan di Galeri!',
+          `Emulsi ${selectedCamera.name} berhasil disimpan ke galeri HP Anda.\n\n` +
           `• Frame: [${frameCount}/36]\n` +
+          `• Album: Renu Biru Cam / Kamera\n` +
           `• Karakter: ${selectedCamera.surpriseElement}`
         );
       } else {
-        // Fallback jika mode simulasi / izin belum disetujui
         Alert.alert(
-          '📸 Emulsi Tercatat!',
-          `Frame [${frameCount}/36] tersimpan di memori kamera ${selectedCamera.name}.`
+          '⚠️ Belum Tersimpan di Galeri',
+          res.error || 'Izin penyimpanan foto belum aktif. Izinkan akses media pada pop-up HP Anda.'
         );
       }
     } catch (err: any) {
       console.log('Capture error:', err);
+      Alert.alert('Gagal Memotret', err?.message || 'Terjadi kesalahan sistem.');
     } finally {
       setIsTakingPhoto(false);
     }
@@ -173,10 +182,10 @@ export function CameraScreen({ selectedCamera, onCameraSwitch }: CameraScreenPro
               </Text>
               <TouchableOpacity
                 style={styles.permissionBtn}
-                onPress={requestPermission}
+                onPress={requestAllPermissions}
                 activeOpacity={0.8}
               >
-                <Text style={styles.permissionBtnText}>IZINKAN AKSES KAMERA</Text>
+                <Text style={styles.permissionBtnText}>IZINKAN AKSES KAMERA & GALERI</Text>
               </TouchableOpacity>
             </View>
           )}
