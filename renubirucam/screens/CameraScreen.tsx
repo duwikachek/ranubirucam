@@ -19,18 +19,27 @@ import { AnalogEmulsionOverlay } from '../engine/AnalogEmulsionOverlay';
 import { generateSurprise, SurpriseState } from '../engine/SurpriseEngine';
 import { takeAndSaveCameraPhoto } from '../engine/CapturePipeline';
 import { CameraIcon } from '../components/CameraIcons';
+import { addPhotoToRoll } from '../store/StorageService';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 interface CameraScreenProps {
   selectedCamera: CameraProfile;
   onCameraSwitch: () => void;
+  frameCount?: number;
+  onFrameCountChange?: (count: number) => void;
 }
 
-export function CameraScreen({ selectedCamera, onCameraSwitch }: CameraScreenProps) {
+export function CameraScreen({
+  selectedCamera,
+  onCameraSwitch,
+  frameCount: propFrameCount,
+  onFrameCountChange,
+}: CameraScreenProps) {
   const [permission, requestPermission] = useCameraPermissions();
   const [facing, setFacing] = useState<CameraType>('back');
-  const [frameCount, setFrameCount] = useState(18);
+  const [internalFrameCount, setInternalFrameCount] = useState(18);
+  const frameCount = propFrameCount !== undefined ? propFrameCount : internalFrameCount;
   const [timerMode, setTimerMode] = useState<0 | 3 | 5 | 10>(0);
   const [flashMode, setFlashMode] = useState<'off' | 'on'>('off');
   const [aspectRatio, setAspectRatio] = useState<'3:2' | '1:1' | '4:3'>('3:2');
@@ -102,7 +111,25 @@ export function CameraScreen({ selectedCamera, onCameraSwitch }: CameraScreenPro
 
       if (res.success) {
         const nextFrame = frameCount >= 36 ? 1 : frameCount + 1;
-        setFrameCount(nextFrame);
+        if (onFrameCountChange) {
+          onFrameCountChange(nextFrame);
+        } else {
+          setInternalFrameCount(nextFrame);
+        }
+
+        // Simpan ke arsip rol kontak offline (PRD F-33)
+        if (res.uri) {
+          addPhotoToRoll({
+            id: `photo_${Date.now()}`,
+            uri: res.uri,
+            cameraId: selectedCamera.id,
+            cameraName: selectedCamera.name,
+            cameraCode: selectedCamera.code,
+            timestamp: Date.now(),
+            frameNumber: frameCount,
+            surpriseNote: surprise?.hasLightLeak ? 'Light Leak Otentik' : undefined,
+          });
+        }
 
         // Generate elemen kejutan baru untuk jepretan berikutnya
         const nextSurprise = generateSurprise(selectedCamera);

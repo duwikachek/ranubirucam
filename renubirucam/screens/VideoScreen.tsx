@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
+import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { Colors } from '../constants/Colors';
 import { Typography } from '../constants/Typography';
 import { CameraProfile } from '../constants/CameraProfiles';
@@ -16,6 +17,9 @@ interface VideoScreenProps {
 }
 
 export function VideoScreen({ selectedCamera }: VideoScreenProps) {
+  const [permission, requestPermission] = useCameraPermissions();
+  const [facing, setFacing] = useState<CameraType>('back');
+  const [zoom, setZoom] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
   const [recordSeconds, setRecordSeconds] = useState(0);
   const [tapeMode, setTapeMode] = useState<'SP' | 'LP'>('SP');
@@ -58,8 +62,25 @@ export function VideoScreen({ selectedCamera }: VideoScreenProps) {
     <View style={styles.container}>
       {/* Video Viewfinder / CRT simulation */}
       <View style={styles.viewfinder}>
+        {/* Hardware Camera Viewfinder Surface */}
+        {permission?.granted ? (
+          <CameraView
+            style={StyleSheet.absoluteFill}
+            facing={facing}
+            zoom={zoom}
+          />
+        ) : (
+          <TouchableOpacity
+            style={styles.permissionPrompt}
+            onPress={requestPermission}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.permissionPromptText}>[KETUK UNTUK IZIN KAMERA DV]</Text>
+          </TouchableOpacity>
+        )}
+
         {/* CRT Scanline overlay simulation */}
-        <View style={styles.scanlineOverlay}>
+        <View style={styles.scanlineOverlay} pointerEvents="none">
           {Array.from({ length: 24 }).map((_, i) => (
             <View key={i} style={styles.scanline} />
           ))}
@@ -134,11 +155,25 @@ export function VideoScreen({ selectedCamera }: VideoScreenProps) {
           <Text style={styles.modeToggleValue}>{tapeMode} (Standard)</Text>
         </TouchableOpacity>
 
+        {/* Camera Facing Flip */}
+        <TouchableOpacity
+          style={styles.facingBtn}
+          onPress={() => setFacing(f => (f === 'back' ? 'front' : 'back'))}
+        >
+          <Text style={styles.facingBtnText}>{facing === 'back' ? 'BELAKANG' : 'DEPAN'}</Text>
+        </TouchableOpacity>
+
         <View style={styles.zoomControls}>
-          <TouchableOpacity style={styles.zoomBtn}>
+          <TouchableOpacity
+            style={styles.zoomBtn}
+            onPress={() => setZoom(z => Math.max(0, z - 0.2))}
+          >
             <Text style={styles.zoomText}>W</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.zoomBtn}>
+          <TouchableOpacity
+            style={styles.zoomBtn}
+            onPress={() => setZoom(z => Math.min(0.6, z + 0.2))}
+          >
             <Text style={styles.zoomText}>T</Text>
           </TouchableOpacity>
         </View>
@@ -362,6 +397,32 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.surfaceContainerLowest,
     borderTopWidth: 1,
     borderTopColor: Colors.outlineVariant,
+  },
+  permissionPrompt: {
+    ...StyleSheet.absoluteFill,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#050705',
+    zIndex: 1,
+  },
+  permissionPromptText: {
+    ...Typography.lcdSm,
+    color: '#00FF66',
+    letterSpacing: 1.5,
+  },
+  facingBtn: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 3,
+    backgroundColor: Colors.surfaceContainer,
+    borderWidth: 1,
+    borderColor: Colors.outlineVariant,
+  },
+  facingBtnText: {
+    ...Typography.lcdSm,
+    color: Colors.shutterOrange,
+    fontSize: 9,
+    fontWeight: '700',
   },
   sideIndicator: {
     alignItems: 'center',

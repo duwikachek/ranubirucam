@@ -61,6 +61,11 @@ export default function App() {
     setActiveTab('kamera');
   };
 
+  const handleFrameCountChange = (newCount: number) => {
+    setFrameCount(newCount);
+    saveStoredFrameCount(newCount);
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar style="light" />
@@ -80,6 +85,8 @@ export default function App() {
             <CameraScreen
               selectedCamera={selectedCamera}
               onCameraSwitch={handleCameraSwitch}
+              frameCount={frameCount}
+              onFrameCountChange={handleFrameCountChange}
             />
           )}
           {activeTab === 'koleksi' && (
