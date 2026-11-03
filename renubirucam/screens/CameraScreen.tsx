@@ -28,7 +28,6 @@ interface CameraScreenProps {
 
 export function CameraScreen({ selectedCamera, onCameraSwitch }: CameraScreenProps) {
   const [permission, requestPermission] = useCameraPermissions();
-  const [mediaPermission, requestMediaPermission] = MediaLibrary.usePermissions({ granularPermissions: ['photo'] });
   const [facing, setFacing] = useState<CameraType>('back');
   const [frameCount, setFrameCount] = useState(18);
   const [timerMode, setTimerMode] = useState<0 | 3 | 5 | 10>(0);
@@ -46,7 +45,6 @@ export function CameraScreen({ selectedCamera, onCameraSwitch }: CameraScreenPro
 
   const requestAllPermissions = async () => {
     await requestPermission();
-    await requestMediaPermission();
   };
 
   // Re-generate surprise when user switches camera
@@ -110,16 +108,13 @@ export function CameraScreen({ selectedCamera, onCameraSwitch }: CameraScreenPro
         setSurprise(nextSurprise);
 
         Alert.alert(
-          '📸 Foto Tersimpan di Galeri!',
-          `Emulsi ${selectedCamera.name} berhasil disimpan ke galeri HP Anda.\n\n` +
-          `• Frame: [${frameCount}/36]\n` +
-          `• Album: Renu Biru Cam / Kamera\n` +
-          `• Karakter: ${selectedCamera.surpriseElement}`
+          '📸 Jepretan Berhasil!',
+          `Emulsi ${selectedCamera.name} tercatat di roll [${frameCount}/36].`
         );
       } else {
         Alert.alert(
-          '⚠️ Belum Tersimpan di Galeri',
-          res.error || 'Izin penyimpanan foto belum aktif. Izinkan akses media pada pop-up HP Anda.'
+          'Gagal Memotret',
+          res.error || 'Terjadi kesalahan sistem.'
         );
       }
     } catch (err: any) {
@@ -185,7 +180,7 @@ export function CameraScreen({ selectedCamera, onCameraSwitch }: CameraScreenPro
                 onPress={requestAllPermissions}
                 activeOpacity={0.8}
               >
-                <Text style={styles.permissionBtnText}>IZINKAN AKSES KAMERA & GALERI</Text>
+                <Text style={styles.permissionBtnText}>IZINKAN AKSES KAMERA</Text>
               </TouchableOpacity>
             </View>
           )}

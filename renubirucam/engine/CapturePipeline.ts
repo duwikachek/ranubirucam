@@ -1,6 +1,7 @@
 // CapturePipeline.ts - Eksekusi Jepretan & Penyimpanan Berkualitas Penuh (PRD F-31)
 import { captureRef } from 'react-native-view-shot';
 import * as MediaLibrary from 'expo-media-library';
+import * as Sharing from 'expo-sharing';
 
 export interface CaptureResult {
   success: boolean;
@@ -9,8 +10,9 @@ export interface CaptureResult {
 }
 
 /**
- * Mengambil foto langsung dari sensor kamera native hardware
- * dan menyimpannya secara permanen ke Galeri HP Android
+ * Mengambil foto langsung dari sensor kamera native hardware.
+ * - Pada APK/Production Build: Langsung tersimpan otomatis ke Galeri (MediaStore DCIM).
+ * - Pada Expo Go: Membuka dialog Android native (Simpan ke Perangkat / Galeri / Foto).
  */
 export async function takeAndSaveCameraPhoto(
   cameraRef: React.RefObject<any>
@@ -20,20 +22,7 @@ export async function takeAndSaveCameraPhoto(
       return { success: false, error: 'Sensor kamera belum siap. Coba lagi dalam 1 detik.' };
     }
 
-    // 1. Minta atau verifikasi izin akses foto (khusus foto, tanpa meminta audio)
-    let perm = await MediaLibrary.getPermissionsAsync(false, ['photo']);
-    if (!perm.granted) {
-      perm = await MediaLibrary.requestPermissionsAsync(false, ['photo']);
-    }
-
-    if (!perm.granted) {
-      return {
-        success: false,
-        error: 'Izin akses galeri belum diizinkan. Harap izinkan akses media pada pop-up HP Anda.',
-      };
-    }
-
-    // 2. Ambil foto resolusi penuh dari sensor kamera hardware
+    // 1. Ambil foto resolusi penuh dari sensor kamera hardware
     const photo = await cameraRef.current.takePictureAsync({
       quality: 0.95,
       skipProcessing: false,
@@ -43,24 +32,42 @@ export async function takeAndSaveCameraPhoto(
       return { success: false, error: 'Sensor kamera tidak menghasilkan berkas gambar.' };
     }
 
-    // 3. Simpan langsung ke MediaStore Galeri Android menggunakan createAssetAsync
-    const asset = await MediaLibrary.createAssetAsync(photo.uri);
-
-    // 4. Masukkan ke album khusus "Renu Biru Cam" agar rapi dan mudah ditemukan
+    // 2. Coba simpan otomatis ke Galeri via MediaLibrary (untuk Standalone APK / Dev Build)
+    let savedDirectly = false;
     try {
-      const album = await MediaLibrary.getAlbumAsync('Renu Biru Cam');
-      if (album == null) {
-        await MediaLibrary.createAlbumAsync('Renu Biru Cam', asset, false);
-      } else {
-        await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
+      const asset = await MediaLibrary.createAssetAsync(photo.uri);
+      savedDirectly = true;
+      try {
+        const album = await MediaLibrary.getAlbumAsync('Renu Biru Cam');
+        if (album == null) {
+          await MediaLibrary.createAlbumAsync('Renu Biru Cam', asset, false);
+        } else {
+          await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
+        }
+      } catch {
+        // Scoped storage fallback
       }
     } catch {
-      // Pada Android 10+ Scoped Storage, asset sudah otomatis tampil di tab Foto/DCIM
+      // Di Expo Go, MediaLibrary dibatasi oleh Google Play Policy
+      savedDirectly = false;
+    }
+
+    // 3. Fallback cerdas untuk Expo Go:
+    // Buka Sheet Android Native agar user bisa langsung ketuk "Simpan Gambar / Galeri"
+    if (!savedDirectly) {
+      const isAvailable = await Sharing.isAvailableAsync();
+      if (isAvailable) {
+        await Sharing.shareAsync(photo.uri, {
+          dialogTitle: 'Simpan Foto ke Galeri HP',
+          mimeType: 'image/jpeg',
+          UTI: 'public.jpeg',
+        });
+      }
     }
 
     return {
       success: true,
-      uri: asset.uri,
+      uri: photo.uri,
     };
   } catch (err: any) {
     console.log('Capture exception:', err?.message || err);
@@ -82,40 +89,34 @@ export async function captureAndSaveAnalogPhoto(
       return { success: false, error: 'View reference tidak tersedia' };
     }
 
-    let perm = await MediaLibrary.getPermissionsAsync(false, ['photo']);
-    if (!perm.granted) {
-      perm = await MediaLibrary.requestPermissionsAsync(false, ['photo']);
-    }
-
-    if (!perm.granted) {
-      return {
-        success: false,
-        error: 'Izin galeri belum diberikan',
-      };
-    }
-
     const uri = await captureRef(viewRef, {
       format: 'jpg',
       quality: 0.95,
       result: 'tmpfile',
     });
 
-    const asset = await MediaLibrary.createAssetAsync(uri);
-
+    let savedDirectly = false;
     try {
-      const album = await MediaLibrary.getAlbumAsync('Renu Biru Cam');
-      if (album == null) {
-        await MediaLibrary.createAlbumAsync('Renu Biru Cam', asset, false);
-      } else {
-        await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
-      }
+      const asset = await MediaLibrary.createAssetAsync(uri);
+      savedDirectly = true;
     } catch {
-      // Fallback
+      savedDirectly = false;
+    }
+
+    if (!savedDirectly) {
+      const isAvailable = await Sharing.isAvailableAsync();
+      if (isAvailable) {
+        await Sharing.shareAsync(uri, {
+          dialogTitle: 'Simpan Hasil Cetak ke Galeri',
+          mimeType: 'image/jpeg',
+          UTI: 'public.jpeg',
+        });
+      }
     }
 
     return {
       success: true,
-      uri: asset.uri,
+      uri,
     };
   } catch (err: any) {
     console.log('Capture view exception:', err?.message || err);
