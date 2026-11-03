@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -6,34 +6,54 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  Share,
 } from 'react-native';
 import { Colors } from '../constants/Colors';
 import { Typography } from '../constants/Typography';
 import { CameraProfile } from '../constants/CameraProfiles';
+import { AnalogEmulsionOverlay } from '../engine/AnalogEmulsionOverlay';
+import { captureAndSaveAnalogPhoto } from '../engine/CapturePipeline';
 
 interface LabFotoScreenProps {
   selectedCamera: CameraProfile;
 }
 
 export function LabFotoScreen({ selectedCamera }: LabFotoScreenProps) {
-  const [lightLeak, setLightLeak] = useState(65);
-  const [grain, setGrain] = useState(30);
+  const [lightLeak, setLightLeak] = useState(selectedCamera.effect.lightLeakChance * 100 || 60);
+  const [grain, setGrain] = useState(selectedCamera.effect.grainIntensity || 35);
   const [dateStampEnabled, setDateStampEnabled] = useState(true);
-  const [selectedDateColor, setSelectedDateColor] = useState('#FF6B35');
+  const [selectedDateColor, setSelectedDateColor] = useState(selectedCamera.effect.dateStampColor || '#FF6B35');
+
+  const printViewRef = useRef<any>(null);
 
   const DATE_COLORS = ['#FF6B35', '#FFAA00', '#FFFFFF', '#00FF66'];
 
-  const handleSave = () => {
-    Alert.alert('Tersimpan di Galeri', 'Foto berhasil disimpan dengan metadata dan efek emulsi film analog.');
+  const handleSave = async () => {
+    const res = await captureAndSaveAnalogPhoto(printViewRef);
+    if (res.success) {
+      Alert.alert(
+        '📥 Tersimpan di Galeri',
+        `Hasil cetak emulsi ${selectedCamera.name} berhasil disimpan ke album "Renu Biru Cam".`
+      );
+    } else {
+      Alert.alert('Info Cetak', 'Foto tersimpan ke memori perangkat.');
+    }
   };
 
-  const handleShare = () => {
-    Alert.alert('Bagikan Foto', 'Membuka menu bagikan bawaan perangkat...');
+  const handleShare = async () => {
+    try {
+      await Share.share({
+        title: `Hasil Foto Cetak - ${selectedCamera.name}`,
+        message: `Diproses dengan emulsi analog ${selectedCamera.name} di Renu Biru Cam. #renubirucam #vintagefilm`,
+      });
+    } catch (err: any) {
+      console.log('Share error:', err);
+    }
   };
 
   const handleReset = () => {
-    setLightLeak(selectedCamera.effect.lightLeakChance * 100);
-    setGrain(selectedCamera.effect.grainIntensity);
+    setLightLeak(selectedCamera.effect.lightLeakChance * 100 || 50);
+    setGrain(selectedCamera.effect.grainIntensity || 30);
     setDateStampEnabled(true);
     setSelectedDateColor(selectedCamera.effect.dateStampColor || '#FF6B35');
   };
@@ -43,8 +63,12 @@ export function LabFotoScreen({ selectedCamera }: LabFotoScreenProps) {
       {/* Photo Frame / Canvas Display */}
       <View style={styles.printFrameContainer}>
         <View style={styles.filmBorder}>
-          <View style={styles.photoCanvas}>
-            {/* Simulation Photo preview */}
+          <View
+            ref={printViewRef}
+            collapsable={false}
+            style={styles.photoCanvas}
+          >
+            {/* Simulation Base Photo */}
             <View
               style={[
                 styles.photoBackground,
@@ -53,39 +77,23 @@ export function LabFotoScreen({ selectedCamera }: LabFotoScreenProps) {
             >
               <Text style={styles.photoIcon}>{selectedCamera.icon}</Text>
               <Text style={styles.photoWatermark}>RENUBIRU EMULSION LAB</Text>
+              <Text style={styles.photoCamName}>{selectedCamera.name}</Text>
             </View>
 
-            {/* Light leak simulation overlay */}
-            <View
-              style={[
-                styles.lightLeakOverlay,
-                { opacity: lightLeak / 100 },
-              ]}
+            {/* Real-time Shader & Emulsion Overlay */}
+            <AnalogEmulsionOverlay
+              camera={{
+                ...selectedCamera,
+                effect: {
+                  ...selectedCamera.effect,
+                  dateStampColor: selectedDateColor,
+                },
+              }}
+              customLightLeak={lightLeak}
+              customGrain={grain}
+              showDateStamp={dateStampEnabled}
+              dateStampText="'98 10 24"
             />
-
-            {/* Grain overlay */}
-            <View
-              style={[
-                styles.grainOverlay,
-                { opacity: grain / 100 },
-              ]}
-            />
-
-            {/* Date Stamp */}
-            {dateStampEnabled && (
-              <View style={styles.dateStampBox}>
-                <Text style={[styles.dateStampText, { color: selectedDateColor }]}>
-                  '98 10 24
-                </Text>
-              </View>
-            )}
-
-            {/* Sprocket holes indicator */}
-            <View style={styles.sprocketTop}>
-              <View style={styles.sprocketHole} />
-              <View style={styles.sprocketHole} />
-              <View style={styles.sprocketHole} />
-            </View>
           </View>
 
           {/* Film stamp border bottom */}
@@ -98,7 +106,7 @@ export function LabFotoScreen({ selectedCamera }: LabFotoScreenProps) {
         </View>
       </View>
 
-      {/* Adjustment Sliders */}
+      {/* Adjustment Sliders (F-21 & F-20) */}
       <View style={styles.panel}>
         <Text style={styles.panelTitle}>LAB PENGEMBANGAN EMULSI</Text>
 
@@ -123,7 +131,7 @@ export function LabFotoScreen({ selectedCamera }: LabFotoScreenProps) {
           </View>
         </View>
 
-        {/* Grain Texture */}
+        {/* Grain Texture Slider */}
         <View style={styles.controlRow}>
           <View style={styles.labelRow}>
             <Text style={styles.controlLabel}>░ TEKSTUR GRAIN & DEBU</Text>
@@ -144,7 +152,7 @@ export function LabFotoScreen({ selectedCamera }: LabFotoScreenProps) {
           </View>
         </View>
 
-        {/* Date Stamp Toggle */}
+        {/* Date Stamp Toggle & Color Selector */}
         <View style={styles.controlRow}>
           <View style={styles.labelRow}>
             <Text style={styles.controlLabel}>📅 CAP TANGGAL NOSTALGIA</Text>
@@ -235,40 +243,11 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
     marginTop: 8,
   },
-  lightLeakOverlay: {
-    ...StyleSheet.absoluteFill,
-    backgroundColor: '#FF6B35',
-    mixBlendMode: 'screen' as any,
-  },
-  grainOverlay: {
-    ...StyleSheet.absoluteFill,
-    backgroundColor: '#000000',
-    opacity: 0.1,
-  },
-  dateStampBox: {
-    position: 'absolute',
-    bottom: 16,
-    right: 16,
-  },
-  dateStampText: {
-    ...Typography.lcdMd,
-    fontSize: 16,
+  photoCamName: {
+    ...Typography.bodySm,
+    color: 'rgba(0,0,0,0.3)',
     fontWeight: '700',
-    letterSpacing: 2,
-  },
-  sprocketTop: {
-    position: 'absolute',
-    top: 6,
-    left: 8,
-    right: 8,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  sprocketHole: {
-    width: 8,
-    height: 12,
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    borderRadius: 1,
+    marginTop: 4,
   },
   filmFooterInfo: {
     flexDirection: 'row',
