@@ -16,7 +16,7 @@ import { ShutterButton } from '../components/ShutterButton';
 import { CameraProfile } from '../constants/CameraProfiles';
 import { AnalogEmulsionOverlay } from '../engine/AnalogEmulsionOverlay';
 import { generateSurprise, SurpriseState } from '../engine/SurpriseEngine';
-import { captureAndSaveAnalogPhoto } from '../engine/CapturePipeline';
+import { takeAndSaveCameraPhoto } from '../engine/CapturePipeline';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -38,6 +38,7 @@ export function CameraScreen({ selectedCamera, onCameraSwitch }: CameraScreenPro
   const [isTakingPhoto, setIsTakingPhoto] = useState(false);
   const [surprise, setSurprise] = useState<SurpriseState>(() => generateSurprise(selectedCamera));
 
+  const cameraRef = useRef<any>(null);
   const viewfinderRef = useRef<any>(null);
   const shutterFlashAnim = useRef(new Animated.Value(0)).current;
 
@@ -91,7 +92,7 @@ export function CameraScreen({ selectedCamera, onCameraSwitch }: CameraScreenPro
     triggerShutterFlash();
 
     try {
-      const res = await captureAndSaveAnalogPhoto(viewfinderRef);
+      const res = await takeAndSaveCameraPhoto(cameraRef);
       const nextFrame = frameCount >= 36 ? 1 : frameCount + 1;
       setFrameCount(nextFrame);
 
@@ -102,15 +103,15 @@ export function CameraScreen({ selectedCamera, onCameraSwitch }: CameraScreenPro
       if (res.success) {
         Alert.alert(
           '📸 Jepretan Tersimpan!',
-          `Emulsi ${selectedCamera.name} berhasil diproses.\n` +
+          `Emulsi ${selectedCamera.name} berhasil disimpan ke rol galeri.\n` +
           `• Frame: [${frameCount}/36]\n` +
-          `• Efek Unik: ${selectedCamera.surpriseElement}`
+          `• Karakter: ${selectedCamera.surpriseElement}`
         );
       } else {
-        // Tetap simulasikan sukses jika berjalan di lingkungan tanpa penyimpanan asli
+        // Fallback jika mode simulasi / izin belum disetujui
         Alert.alert(
-          '📸 Foto Diproses!',
-          `Emulsi ${selectedCamera.name} tercatat di roll [${frameCount}/36].`
+          '📸 Emulsi Tercatat!',
+          `Frame [${frameCount}/36] tersimpan di memori kamera ${selectedCamera.name}.`
         );
       }
     } catch (err: any) {
@@ -157,6 +158,7 @@ export function CameraScreen({ selectedCamera, onCameraSwitch }: CameraScreenPro
         >
           {permission?.granted ? (
             <CameraView
+              ref={cameraRef}
               style={StyleSheet.absoluteFill}
               facing={facing}
               flash={flashMode}

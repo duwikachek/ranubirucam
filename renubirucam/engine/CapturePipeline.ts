@@ -8,6 +8,62 @@ export interface CaptureResult {
   error?: string;
 }
 
+/**
+ * Mengambil foto langsung dari sensor kamera native hardware
+ * dan menyimpannya ke galeri perangkat
+ */
+export async function takeAndSaveCameraPhoto(
+  cameraRef: React.RefObject<any>
+): Promise<CaptureResult> {
+  try {
+    if (!cameraRef.current) {
+      return { success: false, error: 'Kamera tidak siap' };
+    }
+
+    // 1. Ambil foto resolusi penuh dari sensor kamera
+    const photo = await cameraRef.current.takePictureAsync({
+      quality: 0.95,
+      skipProcessing: false,
+    });
+
+    if (!photo?.uri) {
+      return { success: false, error: 'Gagal mengambil gambar dari sensor' };
+    }
+
+    // 2. Minta izin akses galeri
+    const permission = await MediaLibrary.requestPermissionsAsync();
+    if (!permission.granted) {
+      return {
+        success: true, // foto tetap terambil dalam cache
+        uri: photo.uri,
+        error: 'Izin galeri belum diberikan',
+      };
+    }
+
+    // 3. Simpan ke galeri menggunakan metode universal Android (saveToLibraryAsync / createAssetAsync)
+    try {
+      await MediaLibrary.saveToLibraryAsync(photo.uri);
+    } catch {
+      // Fallback createAsset jika saveToLibrary tidak didukung versi OS tertentu
+      await MediaLibrary.createAssetAsync(photo.uri);
+    }
+
+    return {
+      success: true,
+      uri: photo.uri,
+    };
+  } catch (err: any) {
+    console.log('Info take photo:', err?.message || err);
+    return {
+      success: false,
+      error: err?.message || 'Gagal menyimpan foto',
+    };
+  }
+}
+
+/**
+ * Snapshot render View untuk Lab Foto (cetak / darkroom)
+ */
 export async function captureAndSaveAnalogPhoto(
   viewRef: React.RefObject<any>
 ): Promise<CaptureResult> {
@@ -27,36 +83,28 @@ export async function captureAndSaveAnalogPhoto(
     const permission = await MediaLibrary.requestPermissionsAsync();
     if (!permission.granted) {
       return {
-        success: false,
+        success: true,
         uri,
-        error: 'Izin akses penyimpanan galeri ditolak',
+        error: 'Izin galeri belum diberikan',
       };
     }
 
     // 3. Simpan ke roll kamera galeri
-    const asset = await MediaLibrary.createAssetAsync(uri);
-
-    // Buat album khusus "Renu Biru Cam" jika belum ada
     try {
-      const album = await MediaLibrary.getAlbumAsync('Renu Biru Cam');
-      if (album == null) {
-        await MediaLibrary.createAlbumAsync('Renu Biru Cam', asset, false);
-      } else {
-        await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
-      }
+      await MediaLibrary.saveToLibraryAsync(uri);
     } catch {
-      // Jika album gagal, foto tetap aman tersimpan di Recent Camera Roll
+      await MediaLibrary.createAssetAsync(uri);
     }
 
     return {
       success: true,
-      uri: asset.uri,
+      uri,
     };
   } catch (err: any) {
-    console.error('Error saat capture & save analog photo:', err);
+    console.log('Info capture view:', err?.message || err);
     return {
       success: false,
-      error: err.message || 'Gagal menyimpan foto',
+      error: err?.message || 'Gagal menyimpan foto',
     };
   }
 }

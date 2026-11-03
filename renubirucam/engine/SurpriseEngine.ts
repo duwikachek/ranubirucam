@@ -91,3 +91,4 @@ export function generateSurprise(camera: CameraProfile): SurpriseState {
     dustSpecks,
   };
 }
+
