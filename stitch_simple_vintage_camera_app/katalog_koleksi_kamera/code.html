@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;margin:0;padding:0;background-color:#121316;}body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "background": "#121316", "secondary-fixed-dim": "#cac6be", "primary-fixed": "#ffdbd0", "inverse-on-surface": "#2f3034", "on-tertiary-fixed": "#141e14", "tertiary-container": "#919d8e", "on-primary-fixed": "#390c00", "on-tertiary-container": "#2a3429", "secondary": "#cac6be", "surface-container": "#1f1f23", "error-container": "#93000a", "outline": "#a98a80", "surface-dim": "#121316", "on-error-container": "#ffdad6", "surface-tint": "#ffb59d", "secondary-container": "#494740", "on-primary": "#5d1900", "primary-fixed-dim": "#ffb59d", "primary": "#ffb59d", "inverse-surface": "#e3e2e6", "on-tertiary-fixed-variant": "#3e4a3e", "tertiary-fixed-dim": "#becaba", "surface-container-high": "#292a2d", "surface-container-low": "#1b1b1f", "on-primary-container": "#5f1900", "on-secondary-container": "#b9b5ac", "tertiary": "#becaba", "inverse-primary": "#ab3500", "on-primary-fixed-variant": "#832600", "error": "#ffb4ab", "on-background": "#e3e2e6", "on-surface-variant": "#e1bfb5", "surface": "#121316", "on-secondary-fixed-variant": "#494740", "on-surface": "#e3e2e6", "tertiary-fixed": "#d9e6d6", "on-secondary": "#32302a", "surface-container-lowest": "#0d0e11", "primary-container": "#ff6b35", "on-secondary-fixed": "#1d1c16", "surface-variant": "#343538", "surface-bright": "#38393c", "on-tertiary": "#283328", "outline-variant": "#594139", "on-error": "#690005", "surface-container-highest": "#343538", "secondary-fixed": "#e7e2d9" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-lg": "1.5rem", "gutter-tablet": "1.5rem", "space-md": "1rem", "space-xs": "0.25rem", "margin-desktop": "3rem", "margin-tablet": "2rem", "margin": "1rem", "gutter": "1rem", "space-sm": "0.5rem", "space-xl": "2.5rem", "gutter-desktop": "2rem" }, "fontFamily": { "label-meta": ["Space Mono"], "label-lcd-md": ["Space Mono"], "headline-md": ["Space Grotesk"], "body-sm": ["Space Grotesk"], "label-lcd-sm": ["Space Mono"], "label-lcd-lg": ["Space Mono"], "body-lg": ["Space Grotesk"], "body-md": ["Space Grotesk"], "headline-lg": ["Space Grotesk"], "headline-xl-mobile": ["Space Grotesk"], "headline-xl": ["Space Grotesk"], "headline-lg-mobile": ["Space Grotesk"] }, "fontSize": { "label-meta": ["10px", { "lineHeight": "12px", "letterSpacing": "0.1em", "fontWeight": "400" }], "label-lcd-md": ["14px", { "lineHeight": "18px", "letterSpacing": "0.06em", "fontWeight": "700" }], "headline-md": ["22px", { "lineHeight": "28px", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "label-lcd-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "400" }], "label-lcd-lg": ["20px", { "lineHeight": "24px", "letterSpacing": "0.08em", "fontWeight": "700" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "headline-xl-mobile": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen antialiased selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 w-full z-50 pt-safe bg-surface-container-lowest/85 backdrop-blur-xl shadow-[0_1px_12px_rgba(0,0,0,0.6)]"><div class="h-16 px-space-md flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm"><img alt="Analog Shutter Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiJvoFnCUFwVdGpG8E8FO3uewrWiOC4o-DN8i3Ot4J2b6CQFl4uG7f1OasQI23IQhUtraY8kQSxvSh9a8YNNuaFbomDeufEVDMQW48NVaODMNWY9-a-fRCG1UIA2AfkFza9UqqlX5ijyrmTffvQWhfC1lBPBaODHZ7UG4DMtLjvgZRYaPWrlNJ4bmHUf8of7NEL1all8YXU-fRE12F42nKm4_n__HMaZBMMH5M6iJX"/><div class="flex flex-col"><span class="font-headline-md text-body-sm font-semibold tracking-wider uppercase text-on-surface">LEICA·M</span><span class="font-label-meta text-label-meta text-primary-container uppercase">Koleksi</span></div></div><div class="flex items-center gap-space-sm bg-surface-container-low px-space-sm py-space-xs rounded-lg"><div class="flex items-center gap-space-xs px-space-xs bg-surface-container-lowest rounded py-0.5"><span class="font-label-meta text-label-meta text-outline-variant font-bold">EXP</span><span class="font-label-lcd-sm text-label-lcd-sm text-primary-container font-bold">24/36</span></div><div class="flex items-center gap-1 text-tertiary"><span class="material-symbols-outlined text-[16px]">bolt</span><span class="material-symbols-outlined text-[16px]">battery_charging_full</span></div></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full px-space-md py-space-sm gap-space-md">
+<!-- Machined Control Bay: Search & Tactile Calibration Filter -->
+<section class="flex flex-col gap-space-sm">
+<!-- Debossed Search Chamber -->
+<div class="flex items-center gap-space-sm px-space-md py-2.5 rounded-lg bg-surface-container-lowest shadow-[inset_0_2px_5px_rgba(0,0,0,0.8),0_1px_0_rgba(255,255,255,0.05)]">
+<span class="material-symbols-outlined text-outline text-[18px]">search</span>
+<input class="bg-transparent border-none outline-none text-on-surface font-label-lcd-sm text-label-lcd-sm placeholder:text-outline-variant w-full uppercase tracking-wider" id="camera-search" placeholder="CARI TIPE BODI / KARAKTER EMULSI..." type="text"/>
+<div class="flex items-center gap-1 px-1.5 py-0.5 rounded bg-surface-container-high">
+<span class="font-label-meta text-label-meta text-primary font-bold">14</span>
+<span class="font-label-meta text-label-meta text-secondary">SLOT</span>
+</div>
+</div>
+<!-- Stepped Mechanical Filter Pills (Scrollable Deck) -->
+<div class="flex items-center gap-space-xs overflow-x-auto py-1 no-scrollbar -mx-space-md px-space-md" id="filter-container">
+<button class="filter-pill shrink-0 px-space-sm py-1.5 rounded bg-primary-container text-on-primary-container font-label-lcd-sm text-label-lcd-sm uppercase tracking-wider shadow-[0_2px_6px_rgba(0,0,0,0.4)] flex items-center gap-1 active:translate-y-0.5" data-filter="all">
+<span class="w-1.5 h-1.5 rounded-full bg-on-primary-container"></span>
+        Semua (14)
+      </button>
+<button class="filter-pill shrink-0 px-space-sm py-1.5 rounded bg-surface-container-low text-secondary hover:text-on-surface font-label-lcd-sm text-label-lcd-sm uppercase tracking-wider shadow-[0_2px_4px_rgba(0,0,0,0.4)] flex items-center gap-1 active:translate-y-0.5" data-filter="sekali-pakai">
+        Sekali Pakai
+      </button>
+<button class="filter-pill shrink-0 px-space-sm py-1.5 rounded bg-surface-container-low text-secondary hover:text-on-surface font-label-lcd-sm text-label-lcd-sm uppercase tracking-wider shadow-[0_2px_4px_rgba(0,0,0,0.4)] flex items-center gap-1 active:translate-y-0.5" data-filter="film-negatif">
+        Film Negatif
+      </button>
+<button class="filter-pill shrink-0 px-space-sm py-1.5 rounded bg-surface-container-low text-secondary hover:text-on-surface font-label-lcd-sm text-label-lcd-sm uppercase tracking-wider shadow-[0_2px_4px_rgba(0,0,0,0.4)] flex items-center gap-1 active:translate-y-0.5" data-filter="instan">
+        Instan
+      </button>
+<button class="filter-pill shrink-0 px-space-sm py-1.5 rounded bg-surface-container-low text-secondary hover:text-on-surface font-label-lcd-sm text-label-lcd-sm uppercase tracking-wider shadow-[0_2px_4px_rgba(0,0,0,0.4)] flex items-center gap-1 active:translate-y-0.5" data-filter="digital-ccd">
+        Digital CCD
+      </button>
+<button class="filter-pill shrink-0 px-space-sm py-1.5 rounded bg-surface-container-low text-secondary hover:text-on-surface font-label-lcd-sm text-label-lcd-sm uppercase tracking-wider shadow-[0_2px_4px_rgba(0,0,0,0.4)] flex items-center gap-1 active:translate-y-0.5" data-filter="medium-format">
+        Medium Format
+      </button>
+</div>
+</section>
+<!-- Featured Spotlight: Spotlight Chassis (Kodak FunSaver Highlight) -->
+<section class="relative rounded-xl overflow-hidden bg-surface-container-high shadow-[0_8px_20px_rgba(0,0,0,0.65)] flex flex-col">
+<!-- Camera Top Machined Plate Emulation -->
+<div class="h-6 bg-surface-container flex items-center justify-between px-space-sm">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+<span class="font-label-meta text-label-meta text-secondary uppercase tracking-widest">REKOMENDASI KURATOR // MINGGU INI</span>
+</div>
+<span class="font-label-lcd-sm text-label-lcd-sm text-outline font-bold">TYPE-KS98</span>
+</div>
+<!-- Hero Card Presentation -->
+<div class="p-space-md flex flex-col gap-space-sm relative">
+<!-- Vignette and Glow Layer -->
+<div class="absolute -right-10 -bottom-10 w-44 h-44 rounded-full bg-primary-container/10 blur-2xl pointer-events-none"></div>
+<div class="flex items-start justify-between gap-space-sm">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-space-xs">
+<span class="px-2 py-0.5 rounded bg-primary-container text-on-primary-container font-label-lcd-sm text-label-lcd-sm uppercase font-bold tracking-wider">Paling Populer</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-lowest text-primary font-label-meta text-label-meta uppercase">Sekali Pakai</span>
+</div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile font-bold text-on-surface mt-1">K Funs (Kodak FunSaver)</h2>
+<span class="font-label-lcd-sm text-label-lcd-sm text-secondary-fixed-dim">ISO 800 · LENSA 30MM f/10 FIXED</span>
+</div>
+<div class="w-12 h-12 rounded-lg bg-surface-container-lowest shadow-[inset_0_2px_4px_rgba(0,0,0,0.8)] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary-container text-[26px]">camera_roll</span>
+</div>
+</div>
+<!-- Character & Emulsion Description -->
+<p class="font-body-md text-body-md text-secondary line-clamp-2">
+        Karakter warna hangat tajam khas liburan musim panas 90-an dengan efek flash keras di malam hari serta kebocoran cahaya (light leak) acak yang organik.
+      </p>
+<!-- Spec & Optical Swatches -->
+<div class="flex items-center justify-between pt-space-xs">
+<div class="flex flex-col gap-1">
+<span class="font-label-meta text-label-meta text-outline-variant uppercase">DNA Warna Emulsi</span>
+<div class="flex items-center gap-1.5 p-1 rounded bg-surface-container-lowest shadow-[inset_0_1px_3px_rgba(0,0,0,0.6)]">
+<span class="w-3.5 h-3.5 rounded-sm bg-[#e84a27]" title="Warm Amber"></span>
+<span class="w-3.5 h-3.5 rounded-sm bg-[#f2a900]" title="Kodak Yellow"></span>
+<span class="w-3.5 h-3.5 rounded-sm bg-[#5c2d1b]" title="Film Grain Umber"></span>
+<span class="w-3.5 h-3.5 rounded-sm bg-[#ff6b35]" title="Flash Burnout"></span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-space-md py-2 rounded bg-surface-container text-secondary hover:text-on-surface font-headline-md text-body-sm font-semibold tracking-wider uppercase active:translate-y-0.5 shadow-[0_2px_6px_rgba(0,0,0,0.5)]">
+            Detail
+          </button>
+<button class="px-space-md py-2 rounded bg-primary-container text-on-primary-container font-headline-md text-body-sm font-bold tracking-wider uppercase flex items-center gap-1.5 active:translate-y-0.5 shadow-[0_4px_12px_rgba(255,107,53,0.35)]">
+<span class="material-symbols-outlined text-[16px]">radio_button_checked</span>
+            Gunakan
+          </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Section Title Indicator -->
+<div class="flex items-center justify-between pt-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary-container text-[18px]">tune</span>
+<span class="font-headline-md text-body-lg font-bold text-on-surface tracking-wide uppercase">Daftar Bodi &amp; Karakter</span>
+</div>
+<span class="font-label-meta text-label-meta text-outline uppercase">ARSIP TEKNIS</span>
+</div>
+<!-- Camera Body Cards Grid (Tactile Chassis Collection) -->
+<div class="flex flex-col gap-space-md" id="camera-cards-list">
+<!-- Card 1: K Funs (Sekali Pakai) -->
+<article class="camera-card rounded-xl bg-surface-container-high overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.6)] flex flex-col" data-category="sekali-pakai">
+<div class="h-4 bg-surface-container flex items-center justify-between px-space-sm">
+<span class="font-label-meta text-label-meta text-outline">EMULSION-800 // DISPOSABLE</span>
+<div class="flex items-center gap-1 text-primary-container">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-meta text-label-meta font-bold">FAVORIT</span>
+</div>
+</div>
+<div class="p-space-md flex flex-col gap-space-sm">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="px-1.5 py-0.5 rounded bg-surface-container-lowest text-primary font-label-meta text-label-meta uppercase">Sekali Pakai</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-tertiary font-label-meta text-label-meta uppercase">Flash Keras</span>
+</div>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface mt-1">K Funs</h3>
+<span class="font-label-lcd-sm text-label-lcd-sm text-secondary-fixed-dim">Light Leak Acak &amp; Saturasi Panas</span>
+</div>
+<div class="w-10 h-10 rounded bg-surface-container-lowest shadow-[inset_0_2px_4px_rgba(0,0,0,0.8)] flex items-center justify-center text-primary-container shrink-0">
+<span class="material-symbols-outlined text-[20px]">photo_camera</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-secondary">
+          Bodi plastik ramping dengan efek lampu kilat frontal yang tajam, kontras tinggi, dan kejutan bocor cahaya kuning kemerahan di tiap lembar.
+        </p>
+<!-- Element of Surprise Indicator & Film DNA -->
+<div class="flex items-center justify-between p-2 rounded bg-surface-container-low">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">auto_fix_high</span>
+<div class="flex flex-col">
+<span class="font-label-meta text-label-meta text-outline uppercase">Elemen Kejutan</span>
+<span class="font-label-lcd-sm text-label-lcd-sm text-on-surface font-semibold">Kebocoran Cahaya Acak (35%)</span>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-2.5 h-2.5 rounded-full bg-[#f2a900]"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-[#e84a27]"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-[#1b1b1f]"></span>
+</div>
+</div>
+<div class="flex items-center justify-end gap-space-sm pt-1">
+<button class="px-space-sm py-2 rounded bg-surface-container text-secondary hover:text-on-surface font-label-lcd-sm text-label-lcd-sm uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">auto_stories</span>
+            Lihat Cerita
+          </button>
+<button class="px-space-md py-2 rounded bg-primary-container text-on-primary-container font-label-lcd-sm text-label-lcd-sm font-bold uppercase tracking-wider shadow-[0_2px_8px_rgba(255,107,53,0.3)] flex items-center gap-1 active:translate-y-0.5">
+<span class="material-symbols-outlined text-[16px]">touch_app</span>
+            Pilih Bodi
+          </button>
+</div>
+</div>
+</article>
+<!-- Card 2: GRN (Kompak Digital / Ricoh GR) -->
+<article class="camera-card rounded-xl bg-surface-container-high overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.6)] flex flex-col" data-category="digital-ccd">
+<div class="h-4 bg-surface-container flex items-center justify-between px-space-sm">
+<span class="font-label-meta text-label-meta text-outline">STREET SNAP // 28MM PRIME</span>
+<span class="font-label-meta text-label-meta text-tertiary font-bold">TERSEDIA</span>
+</div>
+<div class="p-space-md flex flex-col gap-space-sm">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="px-1.5 py-0.5 rounded bg-surface-container-lowest text-primary font-label-meta text-label-meta uppercase">Kompak Digital</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-tertiary font-label-meta text-label-meta uppercase">Snap Fokus</span>
+</div>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface mt-1">GRN</h3>
+<span class="font-label-lcd-sm text-label-lcd-sm text-secondary-fixed-dim">Tone Biru Elegan &amp; Tekstur Lembut</span>
+</div>
+<div class="w-10 h-10 rounded bg-surface-container-lowest shadow-[inset_0_2px_4px_rgba(0,0,0,0.8)] flex items-center justify-center text-secondary shrink-0">
+<span class="material-symbols-outlined text-[20px]">cc_attribution</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-secondary">
+          Bodi jalanan legendaris bertekstur magnesium. Memberikan tonal warna biru langit yang dingin, shadow pekat tanpa jeda, dan ketajaman sudut optik prima.
+        </p>
+<!-- Element of Surprise & Swatch -->
+<div class="flex items-center justify-between p-2 rounded bg-surface-container-low">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">grain</span>
+<div class="flex flex-col">
+<span class="font-label-meta text-label-meta text-outline uppercase">Elemen Kejutan</span>
+<span class="font-label-lcd-sm text-label-lcd-sm text-on-surface font-semibold">Mikro-Grain Sinematik</span>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-2.5 h-2.5 rounded-full bg-[#5b7382]"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-[#20272f]"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-[#8fa4b3]"></span>
+</div>
+</div>
+<div class="flex items-center justify-end gap-space-sm pt-1">
+<button class="px-space-sm py-2 rounded bg-surface-container text-secondary hover:text-on-surface font-label-lcd-sm text-label-lcd-sm uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">auto_stories</span>
+            Lihat Cerita
+          </button>
+<button class="px-space-md py-2 rounded bg-primary-container text-on-primary-container font-label-lcd-sm text-label-lcd-sm font-bold uppercase tracking-wider shadow-[0_2px_8px_rgba(255,107,53,0.3)] flex items-center gap-1 active:translate-y-0.5">
+<span class="material-symbols-outlined text-[16px]">touch_app</span>
+            Pilih Bodi
+          </button>
+</div>
+</div>
+</article>
+<!-- Card 3: FC 100 (Fujicolor 100 Film Negatif) -->
+<article class="camera-card rounded-xl bg-surface-container-high overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.6)] flex flex-col" data-category="film-negatif">
+<div class="h-4 bg-surface-container flex items-center justify-between px-space-sm">
+<span class="font-label-meta text-label-meta text-outline">DAYLIGHT C-41 // ISO 100</span>
+<span class="font-label-meta text-label-meta text-tertiary-fixed-dim">SIAP PASANG</span>
+</div>
+<div class="p-space-md flex flex-col gap-space-sm">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="px-1.5 py-0.5 rounded bg-surface-container-lowest text-primary font-label-meta text-label-meta uppercase">Film Negatif</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-tertiary font-label-meta text-label-meta uppercase">Warna Bersih</span>
+</div>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface mt-1">FC 100</h3>
+<span class="font-label-lcd-sm text-label-lcd-sm text-secondary-fixed-dim">Fujicolor Tone &amp; Grain Sangat Halus</span>
+</div>
+<div class="w-10 h-10 rounded bg-surface-container-lowest shadow-[inset_0_2px_4px_rgba(0,0,0,0.8)] flex items-center justify-center text-primary-container shrink-0">
+<span class="material-symbols-outlined text-[20px]">filter_vintage</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-secondary">
+          Emulsi legendaris Jepang untuk siang hari. Menghasilkan rona kulit alami, saturasi hijau tanaman yang segar, serta gradasi bayangan lembut tanpa noise berlebih.
+        </p>
+<!-- Element of Surprise & Swatch -->
+<div class="flex items-center justify-between p-2 rounded bg-surface-container-low">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">palette</span>
+<div class="flex flex-col">
+<span class="font-label-meta text-label-meta text-outline uppercase">Elemen Kejutan</span>
+<span class="font-label-lcd-sm text-label-lcd-sm text-on-surface font-semibold">Green Emulsion Shift</span>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-2.5 h-2.5 rounded-full bg-[#1b4d3e]"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-[#6db33f]"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-[#f4ebd0]"></span>
+</div>
+</div>
+<div class="flex items-center justify-end gap-space-sm pt-1">
+<button class="px-space-sm py-2 rounded bg-surface-container text-secondary hover:text-on-surface font-label-lcd-sm text-label-lcd-sm uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">auto_stories</span>
+            Lihat Cerita
+          </button>
+<button class="px-space-md py-2 rounded bg-primary-container text-on-primary-container font-label-lcd-sm text-label-lcd-sm font-bold uppercase tracking-wider shadow-[0_2px_8px_rgba(255,107,53,0.3)] flex items-center gap-1 active:translate-y-0.5">
+<span class="material-symbols-outlined text-[16px]">touch_app</span>
+            Pilih Bodi
+          </button>
+</div>
+</div>
+</article>
+<!-- Card 4: Inst M (Instan / Instax Mini) -->
+<article class="camera-card rounded-xl bg-surface-container-high overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.6)] flex flex-col" data-category="instan">
+<div class="h-4 bg-surface-container flex items-center justify-between px-space-sm">
+<span class="font-label-meta text-label-meta text-outline">INSTANT PRINT // 46X62MM</span>
+<span class="font-label-meta text-label-meta text-primary font-bold">ANIMASI KELUAR</span>
+</div>
+<div class="p-space-md flex flex-col gap-space-sm">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="px-1.5 py-0.5 rounded bg-surface-container-lowest text-primary font-label-meta text-label-meta uppercase">Instan</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-tertiary font-label-meta text-label-meta uppercase">Frame Putih</span>
+</div>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface mt-1">Inst M</h3>
+<span class="font-label-lcd-sm text-label-lcd-sm text-secondary-fixed-dim">Cetak Spontan &amp; Frame Ikonik</span>
+</div>
+<div class="w-10 h-10 rounded bg-surface-container-lowest shadow-[inset_0_2px_4px_rgba(0,0,0,0.8)] flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[20px]">layers</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-secondary">
+          Simulasi kamera instan dengan sensasi lembaran foto keluar perlahan dari slot atas. Tampilan foto muncul bertahap dalam bingkai polaroid klasik.
+        </p>
+<!-- Element of Surprise & Swatch -->
+<div class="flex items-center justify-between p-2 rounded bg-surface-container-low">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">motion_photos_on</span>
+<div class="flex flex-col">
+<span class="font-label-meta text-label-meta text-outline uppercase">Elemen Kejutan</span>
+<span class="font-label-lcd-sm text-label-lcd-sm text-on-surface font-semibold">Developing Lag (3 Detik)</span>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-2.5 h-2.5 rounded-full bg-[#f8f9fa]"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-[#a1b0b5]"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-[#3d454a]"></span>
+</div>
+</div>
+<div class="flex items-center justify-end gap-space-sm pt-1">
+<button class="px-space-sm py-2 rounded bg-surface-container text-secondary hover:text-on-surface font-label-lcd-sm text-label-lcd-sm uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">auto_stories</span>
+            Lihat Cerita
+          </button>
+<button class="px-space-md py-2 rounded bg-primary-container text-on-primary-container font-label-lcd-sm text-label-lcd-sm font-bold uppercase tracking-wider shadow-[0_2px_8px_rgba(255,107,53,0.3)] flex items-center gap-1 active:translate-y-0.5">
+<span class="material-symbols-outlined text-[16px]">touch_app</span>
+            Pilih Bodi
+          </button>
+</div>
+</div>
+</article>
+<!-- Card 5: CCD (Digital CCD 2000-an) -->
+<article class="camera-card rounded-xl bg-surface-container-high overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.6)] flex flex-col" data-category="digital-ccd">
+<div class="h-4 bg-surface-container flex items-center justify-between px-space-sm">
+<span class="font-label-meta text-label-meta text-outline">EARLY DIGICAM // 3.2 MEGAPIXELS</span>
+<span class="font-label-meta text-label-meta text-secondary">Y2K NOSTALGIA</span>
+</div>
+<div class="p-space-md flex flex-col gap-space-sm">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="px-1.5 py-0.5 rounded bg-surface-container-lowest text-primary font-label-meta text-label-meta uppercase">Digital CCD</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-tertiary font-label-meta text-label-meta uppercase">Highlight Bloom</span>
+</div>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface mt-1">CCD 2000s</h3>
+<span class="font-label-lcd-sm text-label-lcd-sm text-secondary-fixed-dim">Sensor CCD Hangat &amp; Glow Vintage</span>
+</div>
+<div class="w-10 h-10 rounded bg-surface-container-lowest shadow-[inset_0_2px_4px_rgba(0,0,0,0.8)] flex items-center justify-center text-primary-container shrink-0">
+<span class="material-symbols-outlined text-[20px]">videocam</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-secondary">
+          Estetika cyber awal 2000-an. Menghasilkan efek blooming lembut saat terkena pantulan cahaya kuat, sedikit pikselasi khas, dan saturasi warna pastel.
+        </p>
+<!-- Element of Surprise & Swatch -->
+<div class="flex items-center justify-between p-2 rounded bg-surface-container-low">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">flare</span>
+<div class="flex flex-col">
+<span class="font-label-meta text-label-meta text-outline uppercase">Elemen Kejutan</span>
+<span class="font-label-lcd-sm text-label-lcd-sm text-on-surface font-semibold">Sensor Smear Highlight</span>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-2.5 h-2.5 rounded-full bg-[#fbf5b7]"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-[#95c5d6]"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-[#465362]"></span>
+</div>
+</div>
+<div class="flex items-center justify-end gap-space-sm pt-1">
+<button class="px-space-sm py-2 rounded bg-surface-container text-secondary hover:text-on-surface font-label-lcd-sm text-label-lcd-sm uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">auto_stories</span>
+            Lihat Cerita
+          </button>
+<button class="px-space-md py-2 rounded bg-primary-container text-on-primary-container font-label-lcd-sm text-label-lcd-sm font-bold uppercase tracking-wider shadow-[0_2px_8px_rgba(255,107,53,0.3)] flex items-center gap-1 active:translate-y-0.5">
+<span class="material-symbols-outlined text-[16px]">touch_app</span>
+            Pilih Bodi
+          </button>
+</div>
+</div>
+</article>
+<!-- Card 6: LM (Rangefinder Leica M Monokrom) -->
+<article class="camera-card rounded-xl bg-surface-container-high overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.6)] flex flex-col" data-category="film-negatif">
+<div class="h-4 bg-surface-container flex items-center justify-between px-space-sm">
+<span class="font-label-meta text-label-meta text-outline">RANGEFINDER 35MM // GERMAN CRAFT</span>
+<span class="font-label-meta text-label-meta text-primary font-bold">MONOKROM B&amp;W</span>
+</div>
+<div class="p-space-md flex flex-col gap-space-sm">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="px-1.5 py-0.5 rounded bg-surface-container-lowest text-primary font-label-meta text-label-meta uppercase">Rangefinder</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-tertiary font-label-meta text-label-meta uppercase">Kontras Dalam</span>
+</div>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface mt-1">LM</h3>
+<span class="font-label-lcd-sm text-label-lcd-sm text-secondary-fixed-dim">Hitam Putih Murni &amp; Ketajaman Kaca</span>
+</div>
+<div class="w-10 h-10 rounded bg-surface-container-lowest shadow-[inset_0_2px_4px_rgba(0,0,0,0.8)] flex items-center justify-center text-primary-container shrink-0">
+<span class="material-symbols-outlined text-[20px]">tonality</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-secondary">
+          Dedikasi bagi jurnalisme foto klasik. Menghilangkan distraksi warna demi memadukan hitam arang, abu-abu mid-tone kaya gradasi, dan sorot cahaya putih dramatis.
+        </p>
+<!-- Element of Surprise & Swatch -->
+<div class="flex items-center justify-between p-2 rounded bg-surface-container-low">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">exposure</span>
+<div class="flex flex-col">
+<span class="font-label-meta text-label-meta text-outline uppercase">Elemen Kejutan</span>
+<span class="font-label-lcd-sm text-label-lcd-sm text-on-surface font-semibold">Silver Halide Micrograin</span>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-2.5 h-2.5 rounded-full bg-[#121316]"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-[#7a7978]"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-[#f4efe6]"></span>
+</div>
+</div>
+<div class="flex items-center justify-end gap-space-sm pt-1">
+<button class="px-space-sm py-2 rounded bg-surface-container text-secondary hover:text-on-surface font-label-lcd-sm text-label-lcd-sm uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">auto_stories</span>
+            Lihat Cerita
+          </button>
+<button class="px-space-md py-2 rounded bg-primary-container text-on-primary-container font-label-lcd-sm text-label-lcd-sm font-bold uppercase tracking-wider shadow-[0_2px_8px_rgba(255,107,53,0.3)] flex items-center gap-1 active:translate-y-0.5">
+<span class="material-symbols-outlined text-[16px]">touch_app</span>
+            Pilih Bodi
+          </button>
+</div>
+</div>
+</article>
+<!-- Card 7: H 500C (Format Medium Hasselblad) -->
+<article class="camera-card rounded-xl bg-surface-container-high overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.6)] flex flex-col" data-category="medium-format">
+<div class="h-4 bg-surface-container flex items-center justify-between px-space-sm">
+<span class="font-label-meta text-label-meta text-outline">6X6 SQUARE // CARL ZEISS 80MM</span>
+<span class="font-label-meta text-label-meta text-tertiary">STUDIO MASTER</span>
+</div>
+<div class="p-space-md flex flex-col gap-space-sm">
+<div class="flex items-start justify-between">
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="px-1.5 py-0.5 rounded bg-surface-container-lowest text-primary font-label-meta text-label-meta uppercase">Medium Format</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-tertiary font-label-meta text-label-meta uppercase">Rasio 1:1</span>
+</div>
+<h3 class="font-headline-md text-headline-md font-bold text-on-surface mt-1">H 500C</h3>
+<span class="font-label-lcd-sm text-label-lcd-sm text-secondary-fixed-dim">Format Persegi &amp; Vinyet Optik Lembut</span>
+</div>
+<div class="w-10 h-10 rounded bg-surface-container-lowest shadow-[inset_0_2px_4px_rgba(0,0,0,0.8)] flex items-center justify-center text-primary-container shrink-0">
+<span class="material-symbols-outlined text-[20px]">crop_square</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-secondary">
+          Bodi kubus ikonis dengan sudut bidik sejajar pinggang (waist-level). Gradasi kedalaman fokus sangat sempit dengan vinyet melingkar halus di setiap tepi frame.
+        </p>
+<!-- Element of Surprise & Swatch -->
+<div class="flex items-center justify-between p-2 rounded bg-surface-container-low">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">blur_circular</span>
+<div class="flex flex-col">
+<span class="font-label-meta text-label-meta text-outline uppercase">Elemen Kejutan</span>
+<span class="font-label-lcd-sm text-label-lcd-sm text-on-surface font-semibold">Corner Fall-off Vignette (-1.2 EV)</span>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-2.5 h-2.5 rounded-full bg-[#3c2a21]"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-[#d5bdaf]"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-[#e3d5ca]"></span>
+</div>
+</div>
+<div class="flex items-center justify-end gap-space-sm pt-1">
+<button class="px-space-sm py-2 rounded bg-surface-container text-secondary hover:text-on-surface font-label-lcd-sm text-label-lcd-sm uppercase tracking-wider flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">auto_stories</span>
+            Lihat Cerita
+          </button>
+<button class="px-space-md py-2 rounded bg-primary-container text-on-primary-container font-label-lcd-sm text-label-lcd-sm font-bold uppercase tracking-wider shadow-[0_2px_8px_rgba(255,107,53,0.3)] flex items-center gap-1 active:translate-y-0.5">
+<span class="material-symbols-outlined text-[16px]">touch_app</span>
+            Pilih Bodi
+          </button>
+</div>
+</div>
+</article>
+</div>
+<!-- Mechanical Footer Status Bay -->
+<section class="mt-space-sm p-space-md rounded-xl bg-surface-container-lowest shadow-[inset_0_2px_6px_rgba(0,0,0,0.85)] flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-lcd-sm text-label-lcd-sm text-on-surface font-bold">14 BODI TERKALIBRASI</span>
+<span class="font-label-meta text-label-meta text-outline">MOTOR SHUTTER SIAP DIGUNAKAN</span>
+</div>
+</div>
+<div class="flex items-center gap-1 px-space-sm py-1 rounded bg-surface-container-high">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+<span class="font-label-meta text-label-meta text-secondary font-bold">READY</span>
+</div>
+</section>
+</div>
+<script>
+  // Tactical micro-interactions for catalog selector
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('.filter-pill');
+    const cameraCards = document.querySelectorAll('.camera-card');
+    const searchInput = document.getElementById('camera-search');
+
+    // Filter Switcher Micro-Action
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Toggle Active Appearance
+        filterButtons.forEach(b => {
+          b.classList.remove('bg-primary-container', 'text-on-primary-container');
+          b.classList.add('bg-surface-container-low', 'text-secondary');
+        });
+        btn.classList.remove('bg-surface-container-low', 'text-secondary');
+        btn.classList.add('bg-primary-container', 'text-on-primary-container');
+
+        const filter = btn.dataset.filter;
+
+        cameraCards.forEach(card => {
+          if (filter === 'all' || card.dataset.category === filter) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    // Realtime Search Filter
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        cameraCards.forEach(card => {
+          const cardText = card.innerText.toLowerCase();
+          if (cardText.includes(query)) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    }
+
+    // Mechanical Haptic Simulation on Selection Buttons
+    const selectButtons = document.querySelectorAll('button');
+    selectButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (navigator.vibrate) {
+          navigator.vibrate(15);
+        }
+      });
+    });
+  });
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_-4px_16px_rgba(0,0,0,0.7)]" data-active-classes="text-primary-container font-semibold"><div class="flex justify-around items-center h-20 px-space-sm"><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-1 text-secondary hover:text-on-surface transition-colors" data-path="kamera" href="#"><span class="material-symbols-outlined text-[24px]">photo_camera</span><span class="font-label-lcd-sm text-label-lcd-sm uppercase tracking-wider">Kamera</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-1 transition-colors text-primary-container font-semibold" data-path="koleksi" href="#"><span class="material-symbols-outlined text-[24px]">inventory_2</span><span class="font-label-lcd-sm text-label-lcd-sm uppercase tracking-wider">Koleksi</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-1 text-secondary hover:text-on-surface transition-colors" data-path="cerita" href="#"><span class="material-symbols-outlined text-[24px]">auto_stories</span><span class="font-label-lcd-sm text-label-lcd-sm uppercase tracking-wider">Cerita</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-1 text-secondary hover:text-on-surface transition-colors" data-path="hasil-foto" href="#"><span class="material-symbols-outlined text-[24px]">photo_library</span><span class="font-label-lcd-sm text-label-lcd-sm uppercase tracking-wider">Lab Foto</span></a></div></nav></body></html>

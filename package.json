@@ -1,0 +1,13 @@
+{
+  "name": "kamera-vintage-analog",
+  "version": "1.0.0",
+  "description": "Aplikasi Kamera Analog Vintage Mobile Berdasarkan Stitch & PRD",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["vintage", "camera", "analog", "film", "stitch"],
+  "author": "Antigravity",
+  "license": "ISC"
+}
+

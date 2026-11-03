@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100%;margin:0;padding:0;background-color:#121316;}body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "background": "#121316", "secondary-fixed-dim": "#cac6be", "primary-fixed": "#ffdbd0", "inverse-on-surface": "#2f3034", "on-tertiary-fixed": "#141e14", "tertiary-container": "#919d8e", "on-primary-fixed": "#390c00", "on-tertiary-container": "#2a3429", "secondary": "#cac6be", "surface-container": "#1f1f23", "error-container": "#93000a", "outline": "#a98a80", "surface-dim": "#121316", "on-error-container": "#ffdad6", "surface-tint": "#ffb59d", "secondary-container": "#494740", "on-primary": "#5d1900", "primary-fixed-dim": "#ffb59d", "primary": "#ffb59d", "inverse-surface": "#e3e2e6", "on-tertiary-fixed-variant": "#3e4a3e", "tertiary-fixed-dim": "#becaba", "surface-container-high": "#292a2d", "surface-container-low": "#1b1b1f", "on-primary-container": "#5f1900", "on-secondary-container": "#b9b5ac", "tertiary": "#becaba", "inverse-primary": "#ab3500", "on-primary-fixed-variant": "#832600", "error": "#ffb4ab", "on-background": "#e3e2e6", "on-surface-variant": "#e1bfb5", "surface": "#121316", "on-secondary-fixed-variant": "#494740", "on-surface": "#e3e2e6", "tertiary-fixed": "#d9e6d6", "on-secondary": "#32302a", "surface-container-lowest": "#0d0e11", "primary-container": "#ff6b35", "on-secondary-fixed": "#1d1c16", "surface-variant": "#343538", "surface-bright": "#38393c", "on-tertiary": "#283328", "outline-variant": "#594139", "on-error": "#690005", "surface-container-highest": "#343538", "secondary-fixed": "#e7e2d9" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-lg": "1.5rem", "gutter-tablet": "1.5rem", "space-md": "1rem", "space-xs": "0.25rem", "margin-desktop": "3rem", "margin-tablet": "2rem", "margin": "1rem", "gutter": "1rem", "space-sm": "0.5rem", "space-xl": "2.5rem", "gutter-desktop": "2rem" }, "fontFamily": { "label-meta": ["Space Mono"], "label-lcd-md": ["Space Mono"], "headline-md": ["Space Grotesk"], "body-sm": ["Space Grotesk"], "label-lcd-sm": ["Space Mono"], "label-lcd-lg": ["Space Mono"], "body-lg": ["Space Grotesk"], "body-md": ["Space Grotesk"], "headline-lg": ["Space Grotesk"], "headline-xl-mobile": ["Space Grotesk"], "headline-xl": ["Space Grotesk"], "headline-lg-mobile": ["Space Grotesk"] }, "fontSize": { "label-meta": ["10px", { "lineHeight": "12px", "letterSpacing": "0.1em", "fontWeight": "400" }], "label-lcd-md": ["14px", { "lineHeight": "18px", "letterSpacing": "0.06em", "fontWeight": "700" }], "headline-md": ["22px", { "lineHeight": "28px", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "label-lcd-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "400" }], "label-lcd-lg": ["20px", { "lineHeight": "24px", "letterSpacing": "0.08em", "fontWeight": "700" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "headline-xl-mobile": ["30px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen antialiased selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 w-full z-50 pt-safe bg-surface-container-lowest/85 backdrop-blur-xl shadow-[0_1px_12px_rgba(0,0,0,0.6)]"><div class="h-16 px-space-md flex items-center justify-between gap-space-sm"><div class="flex items-center gap-space-sm"><img alt="Analog Shutter Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0gVfmF6ZfiSdspdGb-kFrjeSAu3ekgGFF1RT8L6nPFfPCJz22yIU_uFwdeuwIZR2quIaw7W9wHf6TceA8LIHvRg8mrspqhUP711s9LeZZKVg1UZYlQqGllVuH9Ivb835WV3-_eocqxVZaU3CrJjNxsOLmEZUTWgwnE21tiZdDE5b8EqPR4EPB6zqUvxVRqQAOQymr8Oadrn5hTrkxBVw8rFonhnboutrOkpQF8mrd"/><div class="flex flex-col"><span class="font-headline-md text-body-sm font-semibold tracking-wider uppercase text-on-surface">LEICA·M</span><span class="font-label-meta text-label-meta text-primary-container uppercase">Hasil Foto</span></div></div><div class="flex items-center gap-space-sm bg-surface-container-low px-space-sm py-space-xs rounded-lg"><div class="flex items-center gap-space-xs px-space-xs bg-surface-container-lowest rounded py-0.5"><span class="font-label-meta text-label-meta text-outline-variant font-bold">EXP</span><span class="font-label-lcd-sm text-label-lcd-sm text-primary-container font-bold">24/36</span></div><div class="flex items-center gap-1 text-tertiary"><span class="material-symbols-outlined text-[16px]">bolt</span><span class="material-symbols-outlined text-[16px]">battery_charging_full</span></div></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full px-space-md py-space-sm gap-space-md">
+<!-- Top Metadata & Roll Spec Badge (No borders, pure surface shift) -->
+<div class="flex items-center justify-between bg-surface-container-low px-space-md py-space-xs rounded-lg shadow-sm">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+<span class="font-label-meta text-label-meta text-primary-container font-bold uppercase tracking-wider">DEV-LAB READY</span>
+</div>
+<div class="flex items-center gap-space-xs text-on-surface-variant font-label-lcd-sm text-label-lcd-sm">
+<span class="material-symbols-outlined text-[14px] text-tertiary">camera_roll</span>
+<span>ROLL #03 · FR 18/36</span>
+</div>
+</div>
+<!-- Analog Print Viewfinder / Stage Card -->
+<div class="relative w-full flex flex-col items-center bg-surface-container-lowest rounded-xl p-space-md shadow-2xl overflow-hidden">
+<!-- Subtle Machined Top Spec Bar -->
+<div class="w-full flex justify-between items-center pb-space-xs mb-space-xs">
+<span class="font-label-meta text-label-meta text-secondary uppercase tracking-widest">K-FUNS 35MM · f/2.8 · 1/125s</span>
+<div class="flex items-center gap-1 font-label-lcd-sm text-label-lcd-sm text-tertiary">
+<span class="material-symbols-outlined text-[13px]">tune</span>
+<span>PRO-NEG 400</span>
+</div>
+</div>
+<!-- The Film Print Mount (Dynamic Frame Container) -->
+<div class="relative w-full max-w-[320px] aspect-[4/5] bg-surface-container-highest p-3 rounded-lg shadow-[inset_0_2px_6px_rgba(0,0,0,0.8),0_12px_24px_rgba(0,0,0,0.9)] flex flex-col items-center justify-between transition-all duration-300" id="printMount">
+<!-- Film Photo Canvas Wrapper -->
+<div class="relative w-full h-full overflow-hidden rounded bg-black flex items-center justify-center">
+<!-- Rendered Image -->
+<img alt="Hasil Foto Analog" class="w-full h-full object-cover select-none pointer-events-none" data-alt="Intimate warm analog portrait of a young Southeast Asian woman smiling gently by an open window during golden hour. Soft sun flare across the hair, natural skin tone, rich Kodak Portra 400 color science, deep organic film shadows, nostalgic vintage atmosphere with warm amber accents." id="photoElement" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1gxqxiPheK_XL44f4RpyIRiyeUG33e7QVioWR8Nrp-dzWMuPOw4h8tdbwytnliNW1jr4ILh8Qcha3sHyOtoP6d9FI0CcUpEFe8nFy06I8YQNh5dJA_XELHZZXQ0sqbL61ULQNJazUpdSckN-vQ7LHNYrhcpwZAqg9z4isbMrOTJxkoISvzkPb8-gYzHUrexCSnYPZg96vbNsGsYiFG7dZox9S6QlZxY1eoVd_Dqnj"/>
+<!-- Grain & Dust Texture Overlay (Dynamic Opacity) -->
+<div class="absolute inset-0 pointer-events-none mix-blend-screen opacity-30 bg-repeat" id="grainOverlay" style="background-image: radial-gradient(rgba(255,255,255,0.18) 1px, transparent 1px); background-size: 3px 3px;"></div>
+<!-- Light Leak Overlay (Dynamic Opacity) -->
+<div class="absolute inset-0 pointer-events-none mix-blend-screen opacity-45 bg-gradient-to-tr from-primary-container/60 via-primary-fixed/20 to-transparent" id="leakOverlay"></div>
+<!-- Perforated Film Sprocket Indicators (Left & Right for Roll mode) -->
+<div class="absolute left-1 top-0 bottom-0 flex flex-col justify-around pointer-events-none opacity-40" id="sprocketDecorLeft">
+<span class="w-1.5 h-3 bg-surface-container-lowest rounded-xs block"></span>
+<span class="w-1.5 h-3 bg-surface-container-lowest rounded-xs block"></span>
+<span class="w-1.5 h-3 bg-surface-container-lowest rounded-xs block"></span>
+<span class="w-1.5 h-3 bg-surface-container-lowest rounded-xs block"></span>
+</div>
+<div class="absolute right-1 top-0 bottom-0 flex flex-col justify-around pointer-events-none opacity-40" id="sprocketDecorRight">
+<span class="w-1.5 h-3 bg-surface-container-lowest rounded-xs block"></span>
+<span class="w-1.5 h-3 bg-surface-container-lowest rounded-xs block"></span>
+<span class="w-1.5 h-3 bg-surface-container-lowest rounded-xs block"></span>
+<span class="w-1.5 h-3 bg-surface-container-lowest rounded-xs block"></span>
+</div>
+<!-- Vintage LCD Date Stamp Overlay -->
+<div class="absolute bottom-3 right-3 font-label-lcd-md text-label-lcd-md font-bold text-primary-container select-none tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,0.95)] transition-colors duration-200" id="dateStamp">
+          '26 11 02
+        </div>
+<!-- Shutter/Focus Frame Crosshair Guides -->
+<div class="absolute inset-4 pointer-events-none opacity-20 flex items-center justify-center">
+<div class="w-6 h-6 border-transparent relative">
+<span class="absolute top-1/2 left-0 right-0 h-[1px] bg-white/40"></span>
+<span class="absolute left-1/2 top-0 bottom-0 w-[1px] bg-white/40"></span>
+</div>
+</div>
+</div>
+<!-- Mount Label Subtext (Visible on Instant / Mount styles) -->
+<div class="w-full pt-2 flex items-center justify-between px-1" id="mountFooter">
+<span class="font-label-meta text-label-meta text-outline font-bold">FUJI NEOPAN EX-35</span>
+<span class="font-label-meta text-label-meta text-secondary-container">18A / EXP 36</span>
+</div>
+</div>
+<!-- Quick Optical Zoom & Fullscreen Inspect -->
+<div class="w-full flex items-center justify-between mt-space-sm pt-space-xs">
+<div class="flex items-center gap-space-xs bg-surface-container-low px-space-sm py-1 rounded">
+<span class="material-symbols-outlined text-[16px] text-tertiary">check_circle</span>
+<span class="font-label-meta text-label-meta text-on-surface">TERFOKUS TEPAT (1.4M)</span>
+</div>
+<button class="flex items-center gap-1 text-secondary hover:text-on-surface active:scale-95 transition-all text-body-sm font-body-sm" id="btnHapticPing">
+<span class="material-symbols-outlined text-[16px] text-primary">zoom_in</span>
+<span>Perbesar 100%</span>
+</button>
+</div>
+</div>
+<!-- Mechanical Analog Lab Sliders & Control Tray -->
+<div class="w-full flex flex-col bg-surface-container rounded-xl p-space-md gap-space-md shadow-lg">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary-container text-[20px]">tune</span>
+<h2 class="font-headline-md text-body-lg font-bold text-on-surface tracking-tight">Kamar Gelap (Darkroom)</h2>
+</div>
+<button class="font-label-meta text-label-meta uppercase text-secondary hover:text-primary transition-colors" id="btnResetEffects">
+        Reset Kalibrasi
+      </button>
+</div>
+<!-- Sliders Cluster (Tactile Rotary-Slide Feel) -->
+<div class="grid grid-cols-1 gap-space-md">
+<!-- Light Leak Control -->
+<div class="flex flex-col gap-1 bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-1 text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-primary-container">flare</span>
+<span class="font-body-md text-body-md font-semibold">Kebocoran Cahaya (Light Leak)</span>
+</div>
+<span class="font-label-lcd-sm text-label-lcd-sm text-primary-container font-bold bg-surface-container-lowest px-2 py-0.5 rounded" id="leakValLabel">45%</span>
+</div>
+<div class="relative flex items-center h-8">
+<input class="w-full h-2 bg-surface-container-lowest rounded-lg appearance-none cursor-pointer accent-primary-container" id="leakSlider" max="100" min="0" type="range" value="45"/>
+</div>
+<div class="flex justify-between font-label-meta text-label-meta text-outline-variant px-0.5">
+<span>0% STERIL</span>
+<span>50% VINTAGE</span>
+<span>100% INTENS</span>
+</div>
+</div>
+<!-- Grain & Film Dust Control -->
+<div class="flex flex-col gap-1 bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-1 text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-tertiary">grain</span>
+<span class="font-body-md text-body-md font-semibold">Grain &amp; Debu Emulsi</span>
+</div>
+<span class="font-label-lcd-sm text-label-lcd-sm text-primary font-bold bg-surface-container-lowest px-2 py-0.5 rounded" id="grainValLabel">30%</span>
+</div>
+<div class="relative flex items-center h-8">
+<input class="w-full h-2 bg-surface-container-lowest rounded-lg appearance-none cursor-pointer accent-primary" id="grainSlider" max="100" min="0" type="range" value="30"/>
+</div>
+<div class="flex justify-between font-label-meta text-label-meta text-outline-variant px-0.5">
+<span>BERSIH DIGITAL</span>
+<span>ISO 400 EMULSI</span>
+<span>ISO 3200 KASAR</span>
+</div>
+</div>
+</div>
+<!-- Frame Selection (Chamber Plates) -->
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-meta text-label-meta text-secondary uppercase tracking-wider">Format Bingkai Kertas</span>
+<div class="grid grid-cols-4 gap-space-xs">
+<button class="frame-selector-btn active-frame bg-surface-container-highest text-primary-container font-label-lcd-sm text-label-lcd-sm py-2 px-1 rounded flex flex-col items-center gap-1 transition-all" data-frame="roll">
+<span class="material-symbols-outlined text-[18px]">panorama_horizontal</span>
+<span class="text-center">Roll 35mm</span>
+</button>
+<button class="frame-selector-btn bg-surface-container-low text-secondary font-label-lcd-sm text-label-lcd-sm py-2 px-1 rounded flex flex-col items-center gap-1 transition-all hover:text-on-surface" data-frame="instant">
+<span class="material-symbols-outlined text-[18px]">crop_portrait</span>
+<span class="text-center">Instan Putih</span>
+</button>
+<button class="frame-selector-btn bg-surface-container-low text-secondary font-label-lcd-sm text-label-lcd-sm py-2 px-1 rounded flex flex-col items-center gap-1 transition-all hover:text-on-surface" data-frame="slide">
+<span class="material-symbols-outlined text-[18px]">filter_frames</span>
+<span class="text-center">Slide Mount</span>
+</button>
+<button class="frame-selector-btn bg-surface-container-low text-secondary font-label-lcd-sm text-label-lcd-sm py-2 px-1 rounded flex flex-col items-center gap-1 transition-all hover:text-on-surface" data-frame="none">
+<span class="material-symbols-outlined text-[18px]">crop_free</span>
+<span class="text-center">Tanpa Frame</span>
+</button>
+</div>
+</div>
+<!-- Date Stamp Matrix Module -->
+<div class="flex flex-col gap-space-xs bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">calendar_today</span>
+<span class="font-body-md text-body-md font-semibold text-on-surface">Cap Tanggal Nostalgia</span>
+</div>
+<!-- Bimodal mechanical flick switch -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" id="stampToggle" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-lowest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-secondary after:border-surface-variant after:border-0 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+<!-- Color Swatches for Date Stamp -->
+<div class="flex items-center justify-between pt-2" id="stampColorPickerRow">
+<span class="font-label-meta text-label-meta text-on-surface-variant uppercase">Pilihan Warna Tinta:</span>
+<div class="flex items-center gap-space-sm">
+<button class="color-btn w-6 h-6 rounded-full bg-primary-container ring-offset-2 ring-2 ring-primary-container shadow-sm flex items-center justify-center transition-transform active:scale-90" data-stamp-color="#ff6b35" title="Amber"></button>
+<button class="color-btn w-6 h-6 rounded-full bg-on-background opacity-60 hover:opacity-100 shadow-sm flex items-center justify-center transition-transform active:scale-90" data-stamp-color="#e3e2e6" title="Putih"></button>
+<button class="color-btn w-6 h-6 rounded-full bg-red-500 opacity-60 hover:opacity-100 shadow-sm flex items-center justify-center transition-transform active:scale-90" data-stamp-color="#ff5252" title="Merah Klasik"></button>
+</div>
+</div>
+</div>
+</div>
+<!-- Primary Bottom Action Deck (Mechanical Shutter Tone & Print Lab Action) -->
+<div class="flex flex-col gap-space-sm pt-space-xs">
+<!-- Action Row 1: Direct Save & Quick Share -->
+<div class="grid grid-cols-2 gap-space-sm">
+<button class="flex items-center justify-center gap-space-xs bg-primary-container text-on-primary-container py-3.5 px-space-md rounded-lg font-headline-md text-body-md font-bold shadow-xl active:translate-y-0.5 transition-all select-none hover:brightness-110" id="btnSavePhoto">
+<span class="material-symbols-outlined text-[20px]">download</span>
+<span>Simpan HD</span>
+</button>
+<button class="flex items-center justify-center gap-space-xs bg-surface-container-high text-on-surface py-3.5 px-space-md rounded-lg font-headline-md text-body-md font-bold shadow-lg active:translate-y-0.5 transition-all select-none hover:bg-surface-bright" id="btnShareMenu">
+<span class="material-symbols-outlined text-[20px] text-primary">share</span>
+<span>Bagikan</span>
+</button>
+</div>
+<!-- Quick Social Dispatch Strip -->
+<div class="flex items-center justify-around bg-surface-container-low py-2 px-space-sm rounded-lg">
+<button class="social-share-chip flex items-center gap-1.5 text-secondary hover:text-primary transition-colors text-body-sm font-body-sm" data-target="instagram">
+<span class="material-symbols-outlined text-[16px] text-primary-container">camera</span>
+<span>IG Stories</span>
+</button>
+<span class="w-[1px] h-3 bg-surface-variant"></span>
+<button class="social-share-chip flex items-center gap-1.5 text-secondary hover:text-primary transition-colors text-body-sm font-body-sm" data-target="whatsapp">
+<span class="material-symbols-outlined text-[16px] text-tertiary">chat</span>
+<span>WhatsApp</span>
+</button>
+<span class="w-[1px] h-3 bg-surface-variant"></span>
+<button class="social-share-chip flex items-center gap-1.5 text-secondary hover:text-primary transition-colors text-body-sm font-body-sm" data-target="airdrop">
+<span class="material-symbols-outlined text-[16px] text-on-surface">sensors</span>
+<span>AirDrop</span>
+</button>
+</div>
+<!-- Secondary Auxiliary Buttons -->
+<div class="flex items-center justify-between pt-space-xs pb-space-sm px-1">
+<a class="flex items-center gap-1 text-secondary hover:text-on-surface font-body-md text-body-sm transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">history</span>
+<span>Review Kontak Roll #03</span>
+</a>
+<a class="flex items-center gap-1 text-primary-container hover:text-primary font-headline-md text-body-sm font-semibold transition-colors" href="#">
+<span>Jepret Bingkai 19</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Micro-Feedback Toast Notification System -->
+<div class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-surface-container-highest/95 backdrop-blur-md px-space-md py-space-xs rounded-full shadow-2xl flex items-center gap-space-xs opacity-0 pointer-events-none transition-all duration-300 z-50" id="toastNotification">
+<span class="material-symbols-outlined text-primary-container text-[18px]" id="toastIcon">check_circle</span>
+<span class="font-body-md text-body-sm text-on-surface" id="toastMessage">Tersimpan ke Rol Kamera tanpa watermark.</span>
+</div>
+</div>
+<script>
+  (function initAnalogReview() {
+    const leakSlider = document.getElementById('leakSlider');
+    const leakOverlay = document.getElementById('leakOverlay');
+    const leakValLabel = document.getElementById('leakValLabel');
+
+    const grainSlider = document.getElementById('grainSlider');
+    const grainOverlay = document.getElementById('grainOverlay');
+    const grainValLabel = document.getElementById('grainValLabel');
+
+    const stampToggle = document.getElementById('stampToggle');
+    const dateStamp = document.getElementById('dateStamp');
+    const stampColorPickerRow = document.getElementById('stampColorPickerRow');
+    const colorButtons = document.querySelectorAll('.color-btn');
+
+    const printMount = document.getElementById('printMount');
+    const mountFooter = document.getElementById('mountFooter');
+    const sprocketL = document.getElementById('sprocketDecorLeft');
+    const sprocketR = document.getElementById('sprocketDecorRight');
+    const frameButtons = document.querySelectorAll('.frame-selector-btn');
+
+    const btnSavePhoto = document.getElementById('btnSavePhoto');
+    const btnShareMenu = document.getElementById('btnShareMenu');
+    const socialChips = document.querySelectorAll('.social-share-chip');
+    const toast = document.getElementById('toastNotification');
+    const toastMessage = document.getElementById('toastMessage');
+    const btnReset = document.getElementById('btnResetEffects');
+
+    function triggerToast(text, icon = 'check_circle') {
+      if (!toast) return;
+      document.getElementById('toastIcon').textContent = icon;
+      toastMessage.textContent = text;
+      toast.classList.remove('opacity-0', 'pointer-events-none');
+      toast.classList.add('opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0', 'pointer-events-none');
+      }, 2400);
+    }
+
+    // Light Leak Slider Event
+    if (leakSlider && leakOverlay && leakValLabel) {
+      leakSlider.addEventListener('input', (e) => {
+        const val = e.target.value;
+        leakOverlay.style.opacity = (val / 100).toString();
+        leakValLabel.textContent = `${val}%`;
+      });
+    }
+
+    // Grain Slider Event
+    if (grainSlider && grainOverlay && grainValLabel) {
+      grainSlider.addEventListener('input', (e) => {
+        const val = e.target.value;
+        grainOverlay.style.opacity = (val / 100).toString();
+        grainValLabel.textContent = `${val}%`;
+      });
+    }
+
+    // Date Stamp Visibility
+    if (stampToggle && dateStamp && stampColorPickerRow) {
+      stampToggle.addEventListener('change', (e) => {
+        if (e.target.checked) {
+          dateStamp.style.display = 'block';
+          stampColorPickerRow.style.opacity = '1';
+          stampColorPickerRow.style.pointerEvents = 'auto';
+        } else {
+          dateStamp.style.display = 'none';
+          stampColorPickerRow.style.opacity = '0.4';
+          stampColorPickerRow.style.pointerEvents = 'none';
+        }
+      });
+    }
+
+    // Color Swatches
+    colorButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const col = btn.getAttribute('data-stamp-color');
+        if (dateStamp) dateStamp.style.color = col;
+        colorButtons.forEach(b => {
+          b.classList.remove('ring-2', 'ring-primary-container', 'opacity-100');
+          b.classList.add('opacity-60');
+        });
+        btn.classList.add('ring-2', 'ring-primary-container', 'opacity-100');
+        btn.classList.remove('opacity-60');
+      });
+    });
+
+    // Frame Switching Logic
+    frameButtons.forEach((fBtn) => {
+      fBtn.addEventListener('click', () => {
+        const style = fBtn.getAttribute('data-frame');
+        frameButtons.forEach(b => {
+          b.classList.remove('active-frame', 'bg-surface-container-highest', 'text-primary-container');
+          b.classList.add('bg-surface-container-low', 'text-secondary');
+        });
+        fBtn.classList.add('active-frame', 'bg-surface-container-highest', 'text-primary-container');
+        fBtn.classList.remove('bg-surface-container-low', 'text-secondary');
+
+        if (!printMount) return;
+
+        if (style === 'roll') {
+          printMount.className = "relative w-full max-w-[320px] aspect-[4/5] bg-surface-container-highest p-3 rounded-lg shadow-2xl flex flex-col items-center justify-between transition-all duration-300";
+          mountFooter.style.display = 'flex';
+          sprocketL.style.display = 'flex';
+          sprocketR.style.display = 'flex';
+        } else if (style === 'instant') {
+          printMount.className = "relative w-full max-w-[320px] aspect-[4/5] bg-[#ece8de] p-3 pb-8 rounded-lg shadow-2xl flex flex-col items-center justify-between transition-all duration-300";
+          mountFooter.style.display = 'none';
+          sprocketL.style.display = 'none';
+          sprocketR.style.display = 'none';
+        } else if (style === 'slide') {
+          printMount.className = "relative w-full max-w-[320px] aspect-[1/1] bg-surface-bright p-5 rounded-lg shadow-2xl flex flex-col items-center justify-center transition-all duration-300";
+          mountFooter.style.display = 'none';
+          sprocketL.style.display = 'none';
+          sprocketR.style.display = 'none';
+        } else if (style === 'none') {
+          printMount.className = "relative w-full max-w-[320px] aspect-[4/5] bg-transparent p-0 rounded shadow-none flex flex-col items-center justify-center transition-all duration-300";
+          mountFooter.style.display = 'none';
+          sprocketL.style.display = 'none';
+          sprocketR.style.display = 'none';
+        }
+      });
+    });
+
+    // Reset Button
+    if (btnReset) {
+      btnReset.addEventListener('click', () => {
+        if (leakSlider) {
+          leakSlider.value = 45;
+          leakOverlay.style.opacity = '0.45';
+          leakValLabel.textContent = '45%';
+        }
+        if (grainSlider) {
+          grainSlider.value = 30;
+          grainOverlay.style.opacity = '0.30';
+          grainValLabel.textContent = '30%';
+        }
+        triggerToast('Pengaturan kembali ke preset default roll', 'tune');
+      });
+    }
+
+    // Save and Share Buttons
+    if (btnSavePhoto) {
+      btnSavePhoto.addEventListener('click', () => {
+        triggerToast('Tersimpan HD (Resolusi Asli 4032x3024) ke Galeri!');
+      });
+    }
+
+    if (btnShareMenu) {
+      btnShareMenu.addEventListener('click', () => {
+        triggerToast('Membuka menu bagikan sistem...', 'share');
+      });
+    }
+
+    socialChips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        const target = chip.getAttribute('data-target');
+        triggerToast(`Mengirim ke ${target.toUpperCase()} Stories...`, 'send');
+      });
+    });
+
+    const hapticBtn = document.getElementById('btnHapticPing');
+    if (hapticBtn) {
+      hapticBtn.addEventListener('click', () => {
+        triggerToast('Mode detail loupe 100% aktif', 'search');
+      });
+    }
+  })();
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_-4px_16px_rgba(0,0,0,0.7)]" data-active-classes="text-primary-container font-semibold"><div class="flex justify-around items-center h-20 px-space-sm"><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-1 text-secondary hover:text-on-surface transition-colors" data-path="kamera" href="#"><span class="material-symbols-outlined text-[24px]">photo_camera</span><span class="font-label-lcd-sm text-label-lcd-sm uppercase tracking-wider">Kamera</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-1 text-secondary hover:text-on-surface transition-colors" data-path="koleksi" href="#"><span class="material-symbols-outlined text-[24px]">inventory_2</span><span class="font-label-lcd-sm text-label-lcd-sm uppercase tracking-wider">Koleksi</span></a><a class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-1 text-secondary hover:text-on-surface transition-colors" data-path="cerita" href="#"><span class="material-symbols-outlined text-[24px]">auto_stories</span><span class="font-label-lcd-sm text-label-lcd-sm uppercase tracking-wider">Cerita</span></a><a aria-current="page" class="flex flex-col items-center justify-center min-w-[56px] min-h-[44px] gap-1 transition-colors text-primary-container font-semibold" data-path="hasil-foto" href="#"><span class="material-symbols-outlined text-[24px]">photo_library</span><span class="font-label-lcd-sm text-label-lcd-sm uppercase tracking-wider">Lab Foto</span></a></div></nav></body></html>
