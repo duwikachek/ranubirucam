@@ -1,6 +1,9 @@
 node_modules/
 app/node_modules/
 app/.next/
+renubirucam/node_modules/
+renubirucam/.expo/
+renubirucam-source/
 *.log
 .env
 .DS_Store
