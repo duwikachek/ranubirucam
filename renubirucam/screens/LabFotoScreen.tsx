@@ -7,7 +7,9 @@ import {
   ScrollView,
   Alert,
   Share,
+  Image,
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { Colors } from '../constants/Colors';
 import { Typography } from '../constants/Typography';
 import { CameraProfile } from '../constants/CameraProfiles';
@@ -19,6 +21,7 @@ interface LabFotoScreenProps {
 }
 
 export function LabFotoScreen({ selectedCamera }: LabFotoScreenProps) {
+  const [importedImage, setImportedImage] = useState<string | null>(null);
   const [lightLeak, setLightLeak] = useState(selectedCamera.effect.lightLeakChance * 100 || 60);
   const [grain, setGrain] = useState(selectedCamera.effect.grainIntensity || 35);
   const [dateStampEnabled, setDateStampEnabled] = useState(true);
@@ -28,12 +31,28 @@ export function LabFotoScreen({ selectedCamera }: LabFotoScreenProps) {
 
   const DATE_COLORS = ['#FF6B35', '#FFAA00', '#FFFFFF', '#00FF66'];
 
+  const handlePickImage = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'],
+        allowsEditing: true,
+        quality: 0.95,
+      });
+
+      if (!result.canceled && result.assets && result.assets[0]?.uri) {
+        setImportedImage(result.assets[0].uri);
+      }
+    } catch (err: any) {
+      Alert.alert('Gagal Membuka Galeri', err?.message || 'Tidak dapat memuat gambar.');
+    }
+  };
+
   const handleSave = async () => {
     const res = await captureAndSaveAnalogPhoto(printViewRef);
     if (res.success) {
       Alert.alert(
-        '📥 Tersimpan di Galeri',
-        `Hasil cetak emulsi ${selectedCamera.name} berhasil disimpan ke album "Renu Biru Cam".`
+        '📥 Tersimpan',
+        `Hasil cetak emulsi ${selectedCamera.name} berhasil diproses.`
       );
     } else {
       Alert.alert('Info Cetak', 'Foto tersimpan ke memori perangkat.');
@@ -60,6 +79,24 @@ export function LabFotoScreen({ selectedCamera }: LabFotoScreenProps) {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+      {/* Import Photo Bar (PRD F-30) */}
+      <View style={styles.importBar}>
+        <TouchableOpacity style={styles.importBtn} onPress={handlePickImage} activeOpacity={0.8}>
+          <Text style={styles.importBtnIcon}>🖼️</Text>
+          <Text style={styles.importBtnText}>
+            {importedImage ? 'GANTI FOTO DARI GALERI' : 'PILIH FOTO DARI GALERI UNTUK DIOLAH'}
+          </Text>
+        </TouchableOpacity>
+        {importedImage && (
+          <TouchableOpacity
+            style={styles.removeImportBtn}
+            onPress={() => setImportedImage(null)}
+          >
+            <Text style={styles.removeImportText}>✕ Reset Kanvas</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+
       {/* Photo Frame / Canvas Display */}
       <View style={styles.printFrameContainer}>
         <View style={styles.filmBorder}>
@@ -68,17 +105,27 @@ export function LabFotoScreen({ selectedCamera }: LabFotoScreenProps) {
             collapsable={false}
             style={styles.photoCanvas}
           >
-            {/* Simulation Base Photo */}
-            <View
-              style={[
-                styles.photoBackground,
-                { backgroundColor: selectedCamera.palette.secondary },
-              ]}
-            >
-              <Text style={styles.photoIcon}>{selectedCamera.icon}</Text>
-              <Text style={styles.photoWatermark}>RENUBIRU EMULSION LAB</Text>
-              <Text style={styles.photoCamName}>{selectedCamera.name}</Text>
-            </View>
+            {/* If user imported an image from phone gallery */}
+            {importedImage ? (
+              <Image
+                source={{ uri: importedImage }}
+                style={StyleSheet.absoluteFill}
+                resizeMode="cover"
+              />
+            ) : (
+              /* Simulation Base Photo */
+              <View
+                style={[
+                  styles.photoBackground,
+                  { backgroundColor: selectedCamera.palette.secondary },
+                ]}
+              >
+                <Text style={styles.photoIcon}>{selectedCamera.icon}</Text>
+                <Text style={styles.photoWatermark}>RENUBIRU EMULSION LAB</Text>
+                <Text style={styles.photoCamName}>{selectedCamera.name}</Text>
+                <Text style={styles.photoHint}>Ketuk tombol di atas untuk olah foto HP kamu</Text>
+              </View>
+            )}
 
             {/* Real-time Shader & Emulsion Overlay */}
             <AnalogEmulsionOverlay
@@ -208,6 +255,38 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
     gap: 16,
   },
+  importBar: {
+    gap: 6,
+  },
+  importBtn: {
+    backgroundColor: Colors.surfaceContainerHigh,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: Colors.shutterOrange,
+    gap: 8,
+  },
+  importBtnIcon: {
+    fontSize: 18,
+  },
+  importBtnText: {
+    ...Typography.lcdSm,
+    color: Colors.shutterOrange,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
+  removeImportBtn: {
+    alignSelf: 'center',
+    paddingVertical: 4,
+  },
+  removeImportText: {
+    ...Typography.labelMeta,
+    color: Colors.warmSteel,
+  },
   printFrameContainer: {
     alignItems: 'center',
   },
@@ -248,6 +327,12 @@ const styles = StyleSheet.create({
     color: 'rgba(0,0,0,0.3)',
     fontWeight: '700',
     marginTop: 4,
+  },
+  photoHint: {
+    ...Typography.labelMeta,
+    color: 'rgba(0,0,0,0.35)',
+    marginTop: 10,
+    fontSize: 9,
   },
   filmFooterInfo: {
     flexDirection: 'row',
