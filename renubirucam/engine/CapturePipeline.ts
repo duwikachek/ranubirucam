@@ -20,10 +20,10 @@ export async function takeAndSaveCameraPhoto(
       return { success: false, error: 'Sensor kamera belum siap. Coba lagi dalam 1 detik.' };
     }
 
-    // 1. Minta atau verifikasi izin akses penyimpanan/galeri HP
-    let perm = await MediaLibrary.getPermissionsAsync();
+    // 1. Minta atau verifikasi izin akses foto (khusus foto, tanpa meminta audio)
+    let perm = await MediaLibrary.getPermissionsAsync(false, ['photo']);
     if (!perm.granted) {
-      perm = await MediaLibrary.requestPermissionsAsync();
+      perm = await MediaLibrary.requestPermissionsAsync(false, ['photo']);
     }
 
     if (!perm.granted) {
@@ -82,9 +82,9 @@ export async function captureAndSaveAnalogPhoto(
       return { success: false, error: 'View reference tidak tersedia' };
     }
 
-    let perm = await MediaLibrary.getPermissionsAsync();
+    let perm = await MediaLibrary.getPermissionsAsync(false, ['photo']);
     if (!perm.granted) {
-      perm = await MediaLibrary.requestPermissionsAsync();
+      perm = await MediaLibrary.requestPermissionsAsync(false, ['photo']);
     }
 
     if (!perm.granted) {

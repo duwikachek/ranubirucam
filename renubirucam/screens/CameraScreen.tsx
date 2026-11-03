@@ -28,7 +28,7 @@ interface CameraScreenProps {
 
 export function CameraScreen({ selectedCamera, onCameraSwitch }: CameraScreenProps) {
   const [permission, requestPermission] = useCameraPermissions();
-  const [mediaPermission, requestMediaPermission] = MediaLibrary.usePermissions();
+  const [mediaPermission, requestMediaPermission] = MediaLibrary.usePermissions({ granularPermissions: ['photo'] });
   const [facing, setFacing] = useState<CameraType>('back');
   const [frameCount, setFrameCount] = useState(18);
   const [timerMode, setTimerMode] = useState<0 | 3 | 5 | 10>(0);
