@@ -15,6 +15,7 @@ import {
   CAMERA_CATEGORIES,
   CameraProfile,
 } from '../constants/CameraProfiles';
+import { CameraIcon } from '../components/CameraIcons';
 
 interface KoleksiScreenProps {
   selectedCamera: CameraProfile;
@@ -59,7 +60,7 @@ export function KoleksiScreen({
         <View style={styles.cardContent}>
           {/* Icon + code */}
           <View style={styles.cardHeader}>
-            <Text style={styles.cardIcon}>{item.icon}</Text>
+            <CameraIcon id={item.id} size={26} />
             <Text style={styles.cardCode}>{item.code}</Text>
             <TouchableOpacity
               onPress={() => onToggleFavorite(item.id)}

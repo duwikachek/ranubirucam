@@ -11,6 +11,7 @@ import Svg, {
 import { CameraProfile } from '../constants/CameraProfiles';
 import { SurpriseState } from './SurpriseEngine';
 import { Typography } from '../constants/Typography';
+import { FrameRenderer, FrameBorderType } from '../components/FrameBorders';
 
 interface AnalogEmulsionOverlayProps {
   camera: CameraProfile;
@@ -19,8 +20,20 @@ interface AnalogEmulsionOverlayProps {
   dateStampText?: string;
   customLightLeak?: number; // 0-100 override from LabFoto
   customGrain?: number; // 0-100 override from LabFoto
+  frameBorderType?: FrameBorderType; // override from LabFoto frame picker
   width?: number | string;
   height?: number | string;
+}
+
+// Map camera.effect.frameBorder string → FrameBorderType
+function mapFrameBorder(raw: string | undefined): FrameBorderType {
+  switch (raw) {
+    case 'polaroid': return 'polaroid-classic';
+    case 'film-strip': return 'film-35mm';
+    case 'slide': return 'slide-cardboard';
+    case 'dv-overlay': return 'dv-camcorder';
+    default: return 'none';
+  }
 }
 
 export function AnalogEmulsionOverlay({
@@ -30,6 +43,7 @@ export function AnalogEmulsionOverlay({
   dateStampText = "'98 10 24",
   customLightLeak,
   customGrain,
+  frameBorderType,
   width = '100%',
   height = '100%',
 }: AnalogEmulsionOverlayProps) {
@@ -54,6 +68,8 @@ export function AnalogEmulsionOverlay({
       : (camera.effect.grainIntensity / 100) * (1 + (surprise?.grainJitter || 0));
 
   const frameType = camera.effect.frameBorder;
+  // Resolve frame border: prop override > camera default mapping
+  const resolvedFrameType: FrameBorderType = frameBorderType ?? mapFrameBorder(frameType);
 
   return (
     <View style={[styles.container, { width: width as any, height: height as any }]} pointerEvents="none">
@@ -134,44 +150,12 @@ export function AnalogEmulsionOverlay({
         ]}
       />
 
-      {/* 4. Authentic Frame Borders */}
-      {frameType === 'polaroid' && (
-        <View style={styles.polaroidFrame}>
-          <View style={styles.polaroidInner} />
-          <View style={styles.polaroidBottomArea}>
-            <Text style={styles.polaroidChalkText}>{camera.name}</Text>
-          </View>
-        </View>
-      )}
-
-      {frameType === 'film-strip' && (
-        <View style={styles.filmStripBorder}>
-          {/* Top Sprocket Perforations */}
-          <View style={styles.sprocketRowTop}>
-            {Array.from({ length: 8 }).map((_, i) => (
-              <View key={`t-${i}`} style={styles.sprocketHole} />
-            ))}
-          </View>
-          {/* Film Edge Legend Stamp */}
-          <View style={styles.filmLegendRow}>
-            <Text style={styles.filmLegendText}>▶ {camera.code} SAFETY FILM 400</Text>
-            <Text style={styles.filmLegendText}>18A ▶</Text>
-          </View>
-          {/* Bottom Sprocket Perforations */}
-          <View style={styles.sprocketRowBottom}>
-            {Array.from({ length: 8 }).map((_, i) => (
-              <View key={`b-${i}`} style={styles.sprocketHole} />
-            ))}
-          </View>
-        </View>
-      )}
-
-      {frameType === 'slide' && (
-        <View style={styles.slideMount}>
-          <View style={styles.slideMountBorder} />
-          <Text style={styles.slideMountText}>KODACHROME TRANSPARENCY</Text>
-        </View>
-      )}
+      {/* 4. Authentic Frame Borders — powered by FrameBorders.tsx */}
+      <FrameRenderer
+        type={resolvedFrameType}
+        cameraName={camera.name}
+        cameraCode={camera.code}
+      />
 
       {/* 5. Retro 7-Segment / Phosphor Date Stamp */}
       {showDateStamp && (

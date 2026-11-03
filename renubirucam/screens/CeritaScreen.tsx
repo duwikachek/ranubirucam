@@ -10,6 +10,7 @@ import {
 import { Colors } from '../constants/Colors';
 import { Typography } from '../constants/Typography';
 import { CameraProfile } from '../constants/CameraProfiles';
+import { CameraIcon } from '../components/CameraIcons';
 
 interface CeritaScreenProps {
   selectedCamera: CameraProfile;
@@ -22,7 +23,7 @@ export function CeritaScreen({ selectedCamera, onUseCamera }: CeritaScreenProps)
       {/* Hero Header */}
       <View style={styles.heroCard}>
         <View style={[styles.heroBadge, { backgroundColor: selectedCamera.palette.primary }]}>
-          <Text style={styles.heroIcon}>{selectedCamera.icon}</Text>
+          <CameraIcon id={selectedCamera.id} size={40} color="#FFFFFF" />
         </View>
         <Text style={styles.cameraCode}>{selectedCamera.code}</Text>
         <Text style={styles.cameraName}>{selectedCamera.name}</Text>

@@ -18,6 +18,7 @@ import { CameraProfile } from '../constants/CameraProfiles';
 import { AnalogEmulsionOverlay } from '../engine/AnalogEmulsionOverlay';
 import { generateSurprise, SurpriseState } from '../engine/SurpriseEngine';
 import { takeAndSaveCameraPhoto } from '../engine/CapturePipeline';
+import { CameraIcon } from '../components/CameraIcons';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -170,7 +171,7 @@ export function CameraScreen({ selectedCamera, onCameraSwitch }: CameraScreenPro
             />
           ) : (
             <View style={styles.previewPlaceholder}>
-              <Text style={styles.previewIcon}>{selectedCamera.icon}</Text>
+              <CameraIcon id={selectedCamera.id} size={72} />
               <Text style={styles.previewText}>{selectedCamera.name}</Text>
               <Text style={styles.previewSubtext}>
                 Izin akses kamera diperlukan untuk live preview.

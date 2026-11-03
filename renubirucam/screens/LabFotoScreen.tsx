@@ -15,6 +15,7 @@ import { Typography } from '../constants/Typography';
 import { CameraProfile } from '../constants/CameraProfiles';
 import { AnalogEmulsionOverlay } from '../engine/AnalogEmulsionOverlay';
 import { captureAndSaveAnalogPhoto } from '../engine/CapturePipeline';
+import { VINTAGE_FRAMES, FrameBorderType } from '../components/FrameBorders';
 
 interface LabFotoScreenProps {
   selectedCamera: CameraProfile;
@@ -26,6 +27,7 @@ export function LabFotoScreen({ selectedCamera }: LabFotoScreenProps) {
   const [grain, setGrain] = useState(selectedCamera.effect.grainIntensity || 35);
   const [dateStampEnabled, setDateStampEnabled] = useState(true);
   const [selectedDateColor, setSelectedDateColor] = useState(selectedCamera.effect.dateStampColor || '#FF6B35');
+  const [selectedFrame, setSelectedFrame] = useState<FrameBorderType>('none');
 
   const printViewRef = useRef<any>(null);
 
@@ -140,6 +142,7 @@ export function LabFotoScreen({ selectedCamera }: LabFotoScreenProps) {
               customGrain={grain}
               showDateStamp={dateStampEnabled}
               dateStampText="'98 10 24"
+              frameBorderType={selectedFrame}
             />
           </View>
 
@@ -230,6 +233,35 @@ export function LabFotoScreen({ selectedCamera }: LabFotoScreenProps) {
             </View>
           )}
         </View>
+      </View>
+
+      {/* Frame Border Picker (Step 5C — PRD F-22) */}
+      <View style={styles.panel}>
+        <Text style={styles.panelTitle}>🎞 BINGKAI FOTO VINTAGE</Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.framePicker}
+        >
+          {VINTAGE_FRAMES.map(frame => (
+            <TouchableOpacity
+              key={frame.id}
+              style={[
+                styles.frameChip,
+                selectedFrame === frame.id && styles.frameChipActive,
+              ]}
+              onPress={() => setSelectedFrame(frame.id)}
+              activeOpacity={0.8}
+            >
+              <Text style={[
+                styles.frameChipText,
+                selectedFrame === frame.id && styles.frameChipTextActive,
+              ]}>
+                {frame.name}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       </View>
 
       {/* Action Buttons */}
@@ -477,5 +509,32 @@ const styles = StyleSheet.create({
   shareButtonText: {
     ...Typography.lcdSm,
     color: Colors.cream,
+  },
+  // Frame Picker styles
+  framePicker: {
+    flexDirection: 'row',
+    gap: 8,
+    paddingVertical: 4,
+  },
+  frameChip: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 3,
+    borderWidth: 1,
+    borderColor: Colors.outlineVariant,
+    backgroundColor: Colors.surfaceContainerHigh,
+  },
+  frameChipActive: {
+    borderColor: Colors.shutterOrange,
+    backgroundColor: 'rgba(255,107,53,0.18)',
+  },
+  frameChipText: {
+    ...Typography.labelMeta,
+    color: Colors.warmSteel,
+    fontSize: 10,
+  },
+  frameChipTextActive: {
+    color: Colors.shutterOrange,
+    fontWeight: '700',
   },
 });
