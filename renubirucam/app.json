@@ -9,6 +9,10 @@
     "splash": {
       "backgroundColor": "#121316"
     },
+    "androidNavigationBar": {
+      "backgroundColor": "#0d0e11",
+      "barStyle": "light-content"
+    },
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.renubirucam.app"

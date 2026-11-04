@@ -53,11 +53,11 @@ export function BottomNav({ activeTab, onTabPress }: BottomNavProps) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: Colors.surfaceContainerLow,
+    backgroundColor: Colors.surfaceContainerLowest,
     borderTopWidth: 1,
     borderTopColor: Colors.outlineVariant,
-    paddingBottom: Platform.OS === 'android' ? 8 : 20, // safe area untuk iOS
-    paddingTop: 8,
+    paddingBottom: Platform.OS === 'android' ? 28 : 24, // Safe area ekstra untuk navigasi bawaan Android (3 tombol / gesture pill)
+    paddingTop: 10,
   },
   tab: {
     flex: 1,
@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 4,
     position: 'relative',
+    minHeight: 46,
   },
   icon: {
     fontSize: 20,
