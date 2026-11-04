@@ -26,12 +26,25 @@ interface AnalogEmulsionOverlayProps {
 }
 
 // Map camera.effect.frameBorder string → FrameBorderType
-function mapFrameBorder(raw: string | undefined): FrameBorderType {
+function mapFrameBorder(raw: string | undefined, cameraId?: string): FrameBorderType {
+  if (cameraId === 'instm') return 'polaroid-classic';
+  if (cameraId === 'polan') return 'polaroid-black';
+  if (cameraId === 'h500c') return 'medium-format-6x6';
+  if (cameraId === 'slide') return 'slide-cardboard';
+  if (cameraId === 'kfuns' || cameraId === 'fqs') return 'disposable-fqs';
+  if (cameraId === 'hglow') return 'lo-fi-toy';
+  if (cameraId === 'dv') return 'dv-camcorder';
+  if (cameraId === 'fc100' || cameraId === 'fn1600' || cameraId === 'rz67' || cameraId === 'lm') return 'film-35mm';
+
   switch (raw) {
     case 'polaroid': return 'polaroid-classic';
+    case 'polaroid-black': return 'polaroid-black';
     case 'film-strip': return 'film-35mm';
     case 'slide': return 'slide-cardboard';
     case 'dv-overlay': return 'dv-camcorder';
+    case 'medium-format': return 'medium-format-6x6';
+    case 'disposable': return 'disposable-fqs';
+    case 'lo-fi': return 'lo-fi-toy';
     default: return 'none';
   }
 }
@@ -69,7 +82,7 @@ export function AnalogEmulsionOverlay({
 
   const frameType = camera.effect.frameBorder;
   // Resolve frame border: prop override > camera default mapping
-  const resolvedFrameType: FrameBorderType = frameBorderType ?? mapFrameBorder(frameType);
+  const resolvedFrameType: FrameBorderType = frameBorderType ?? mapFrameBorder(frameType, camera.id);
 
   return (
     <View style={[styles.container, { width: width as any, height: height as any }]} pointerEvents="none">
@@ -110,6 +123,11 @@ export function AnalogEmulsionOverlay({
         {/* Render Vignette */}
         <Rect width="100%" height="100%" fill="url(#vignetteGrad)" />
 
+        {/* Holga circular toy tunnel lens mask */}
+        {camera.id === 'hglow' && (
+          <Circle cx="50%" cy="50%" r="52%" stroke="#000000" strokeWidth="36" fill="none" opacity="0.65" />
+        )}
+
         {/* Render Light Leak */}
         {leakPower > 0 && (
           <Rect width="100%" height="100%" fill="url(#lightLeakGrad)" />
@@ -139,13 +157,35 @@ export function AnalogEmulsionOverlay({
         ]}
       />
 
+      {/* 2b. Special Leica M High-Contrast B&W Monochrome Filter */}
+      {camera.id === 'lm' && (
+        <View
+          style={[
+            StyleSheet.absoluteFill,
+            {
+              backgroundColor: '#111111',
+              opacity: 0.38,
+            },
+          ]}
+        />
+      )}
+
+      {/* 2c. Special DV Camcorder CRT Interlaced Scanlines */}
+      {camera.id === 'dv' && (
+        <View style={styles.crtScanlineBox} pointerEvents="none">
+          {Array.from({ length: 28 }).map((_, i) => (
+            <View key={i} style={styles.crtLine} />
+          ))}
+        </View>
+      )}
+
       {/* 3. Analog Film Grain Simulation Layer */}
       <View
         style={[
           StyleSheet.absoluteFill,
           {
             backgroundColor: '#000000',
-            opacity: Math.min(grainVal * 0.35, 0.4),
+            opacity: Math.min(grainVal * 0.4, 0.45),
           },
         ]}
       />
@@ -290,5 +330,15 @@ const styles = StyleSheet.create({
     textShadowColor: 'rgba(0,0,0,0.8)',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 3,
+  },
+  // CRT Scanlines for DV Camcorder
+  crtScanlineBox: {
+    ...StyleSheet.absoluteFill,
+    justifyContent: 'space-between',
+    opacity: 0.25,
+  },
+  crtLine: {
+    height: 1,
+    backgroundColor: '#00FF66',
   },
 });

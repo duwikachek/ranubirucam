@@ -8,16 +8,18 @@ import {
   Platform,
   Alert,
   Animated,
+  Image,
 } from 'react-native';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
+import { captureRef } from 'react-native-view-shot';
 import { Colors } from '../constants/Colors';
 import { Typography } from '../constants/Typography';
 import { ShutterButton } from '../components/ShutterButton';
 import { CameraProfile } from '../constants/CameraProfiles';
 import { AnalogEmulsionOverlay } from '../engine/AnalogEmulsionOverlay';
 import { generateSurprise, SurpriseState } from '../engine/SurpriseEngine';
-import { takeAndSaveCameraPhoto } from '../engine/CapturePipeline';
+import { saveProcessedPhotoToGallery } from '../engine/CapturePipeline';
 import { CameraIcon } from '../components/CameraIcons';
 import { addPhotoToRoll } from '../store/StorageService';
 
@@ -47,6 +49,7 @@ export function CameraScreen({
   const [isCountingDown, setIsCountingDown] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [isTakingPhoto, setIsTakingPhoto] = useState(false);
+  const [processingPhotoUri, setProcessingPhotoUri] = useState<string | null>(null);
   const [surprise, setSurprise] = useState<SurpriseState>(() => generateSurprise(selectedCamera));
 
   const cameraRef = useRef<any>(null);
@@ -57,8 +60,11 @@ export function CameraScreen({
     await requestPermission();
   };
 
-  // Re-generate surprise when user switches camera
+  // Re-generate surprise & adapt aspect ratio when user switches camera
   useEffect(() => {
+    if (selectedCamera.defaultAspectRatio) {
+      setAspectRatio(selectedCamera.defaultAspectRatio);
+    }
     setSurprise(generateSurprise(selectedCamera));
   }, [selectedCamera.id]);
 
@@ -107,48 +113,74 @@ export function CameraScreen({
     triggerShutterFlash();
 
     try {
-      const res = await takeAndSaveCameraPhoto(cameraRef);
-
-      if (res.success) {
-        const nextFrame = frameCount >= 36 ? 1 : frameCount + 1;
-        if (onFrameCountChange) {
-          onFrameCountChange(nextFrame);
-        } else {
-          setInternalFrameCount(nextFrame);
-        }
-
-        // Simpan ke arsip rol kontak offline (PRD F-33)
-        if (res.uri) {
-          addPhotoToRoll({
-            id: `photo_${Date.now()}`,
-            uri: res.uri,
-            cameraId: selectedCamera.id,
-            cameraName: selectedCamera.name,
-            cameraCode: selectedCamera.code,
-            timestamp: Date.now(),
-            frameNumber: frameCount,
-            surpriseNote: surprise?.hasLightLeak ? 'Light Leak Otentik' : undefined,
-          });
-        }
-
-        // Generate elemen kejutan baru untuk jepretan berikutnya
-        const nextSurprise = generateSurprise(selectedCamera);
-        setSurprise(nextSurprise);
-
-        Alert.alert(
-          '📸 Jepretan Berhasil!',
-          `Emulsi ${selectedCamera.name} tercatat di roll [${frameCount}/36].`
-        );
-      } else {
-        Alert.alert(
-          'Gagal Memotret',
-          res.error || 'Terjadi kesalahan sistem.'
-        );
+      if (!cameraRef.current) {
+        throw new Error('Sensor kamera belum siap. Coba lagi dalam 1 detik.');
       }
+
+      // 1. Ambil foto resolusi penuh dari sensor kamera hardware
+      const photo = await cameraRef.current.takePictureAsync({
+        quality: 0.95,
+        skipProcessing: false,
+      });
+
+      if (!photo?.uri) {
+        throw new Error('Sensor kamera tidak menghasilkan berkas gambar.');
+      }
+
+      // 2. Pasang foto ke kanvas untuk dibake bersama emulsi analog & bingkai
+      setProcessingPhotoUri(photo.uri);
+
+      // Tunggu 250ms agar ImageView dan SVG frame selesai dirender di layar
+      await new Promise(resolve => setTimeout(resolve, 250));
+
+      // 3. Snapshot kanvas optik beresolusi penuh
+      let finalUri = photo.uri;
+      if (viewfinderRef.current) {
+        try {
+          finalUri = await captureRef(viewfinderRef, {
+            format: 'jpg',
+            quality: 0.95,
+            result: 'tmpfile',
+          });
+        } catch (snapErr) {
+          console.log('CaptureRef snapshot error, fallback to raw photo:', snapErr);
+        }
+      }
+
+      // 4. Simpan foto analog hasil pemrosesan ke Galeri HP (MediaStore DCIM)
+      const saveRes = await saveProcessedPhotoToGallery(finalUri);
+
+      // 5. Catat frame ke status bar mekanik dan arsip rol kontak offline
+      const nextFrame = frameCount >= 36 ? 1 : frameCount + 1;
+      if (onFrameCountChange) {
+        onFrameCountChange(nextFrame);
+      } else {
+        setInternalFrameCount(nextFrame);
+      }
+
+      addPhotoToRoll({
+        id: `photo_${Date.now()}`,
+        uri: finalUri,
+        cameraId: selectedCamera.id,
+        cameraName: selectedCamera.name,
+        cameraCode: selectedCamera.code,
+        timestamp: Date.now(),
+        frameNumber: frameCount,
+        surpriseNote: surprise?.hasLightLeak ? 'Cahaya Bocor Otentik' : undefined,
+      });
+
+      // 6. Generate elemen kejutan baru untuk jepretan selanjutnya
+      setSurprise(generateSurprise(selectedCamera));
+
+      Alert.alert(
+        '📸 Foto Analog Tersimpan!',
+        `Hasil foto ${selectedCamera.name} dengan karakter dan bingkai otentik berhasil dicatat ke rol [${frameCount}/36].`
+      );
     } catch (err: any) {
       console.log('Capture error:', err);
       Alert.alert('Gagal Memotret', err?.message || 'Terjadi kesalahan sistem.');
     } finally {
+      setProcessingPhotoUri(null);
       setIsTakingPhoto(false);
     }
   };
@@ -188,7 +220,13 @@ export function CameraScreen({
           collapsable={false}
           style={[styles.viewfinderCanvas, getAspectRatioStyle()]}
         >
-          {permission?.granted ? (
+          {processingPhotoUri ? (
+            <Image
+              source={{ uri: processingPhotoUri }}
+              style={StyleSheet.absoluteFill}
+              resizeMode="cover"
+            />
+          ) : permission?.granted ? (
             <CameraView
               ref={cameraRef}
               style={StyleSheet.absoluteFill}
@@ -239,34 +277,51 @@ export function CameraScreen({
             </View>
           )}
 
-          {/* Corner optical brackets */}
-          <View style={[styles.corner, styles.cornerTL]} />
-          <View style={[styles.corner, styles.cornerTR]} />
-          <View style={[styles.corner, styles.cornerBL]} />
-          <View style={[styles.corner, styles.cornerBR]} />
+          {/* Corner optical brackets (Hanya tampil di pratinjau live, bukan di hasil cetak foto) */}
+          {!processingPhotoUri && (
+            <>
+              <View style={[styles.corner, styles.cornerTL]} />
+              <View style={[styles.corner, styles.cornerTR]} />
+              <View style={[styles.corner, styles.cornerBL]} />
+              <View style={[styles.corner, styles.cornerBR]} />
+            </>
+          )}
 
-          {/* Live HUD Top Readout */}
-          <View style={styles.hudTop}>
-            <View style={styles.hudBadge}>
-              <Text style={styles.hudText}>● DEV-LAB READY</Text>
+          {/* Live HUD Top Readout (Hanya tampil di pratinjau live) */}
+          {!processingPhotoUri && (
+            <View style={styles.hudTop}>
+              <View style={styles.hudBadge}>
+                <Text style={styles.hudText}>● DEV-LAB READY</Text>
+              </View>
+              <View style={styles.hudBadge}>
+                <Text style={styles.hudText}>
+                  ROLL #01 · FR {String(frameCount).padStart(2, '0')}/36
+                </Text>
+              </View>
             </View>
-            <View style={styles.hudBadge}>
-              <Text style={styles.hudText}>
-                ROLL #01 · FR {String(frameCount).padStart(2, '0')}/36
+          )}
+
+          {/* Live HUD Bottom Readout (Hanya tampil di pratinjau live) */}
+          {!processingPhotoUri && (
+            <View style={styles.hudBottom}>
+              <Text style={styles.hudSmall}>
+                {selectedCamera.code} 35MM · f/2.5 · 1/1250
+              </Text>
+              <Text style={styles.hudSmall}>
+                ISO {selectedCamera.id === 'fn1600' ? '1600' : '400'}
               </Text>
             </View>
-          </View>
-
-          {/* Live HUD Bottom Readout */}
-          <View style={styles.hudBottom}>
-            <Text style={styles.hudSmall}>
-              {selectedCamera.code} 35MM · f/2.5 · 1/1250
-            </Text>
-            <Text style={styles.hudSmall}>
-              ISO {selectedCamera.id === 'fn1600' ? '1600' : '400'}
-            </Text>
-          </View>
+          )}
         </View>
+
+        {/* Developing Film Indicator */}
+        {processingPhotoUri && (
+          <View style={styles.developingToast}>
+            <Text style={styles.developingToastText}>
+              ⚙ MENCETAK EMULSI {selectedCamera.code} KE ROL...
+            </Text>
+          </View>
+        )}
       </View>
 
       {/* Manual Mechanical Controls Bar (PRD F-07) */}
@@ -544,5 +599,23 @@ const styles = StyleSheet.create({
     ...Typography.labelMeta,
     color: Colors.warmSteel,
     fontSize: 8,
+  },
+  developingToast: {
+    position: 'absolute',
+    bottom: 24,
+    backgroundColor: 'rgba(18,19,22,0.92)',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: Colors.shutterOrange,
+    zIndex: 99,
+  },
+  developingToastText: {
+    ...Typography.lcdSm,
+    color: Colors.shutterOrange,
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 1,
   },
 });

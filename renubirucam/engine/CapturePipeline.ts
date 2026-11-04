@@ -10,6 +10,59 @@ export interface CaptureResult {
 }
 
 /**
+ * Simpan berkas foto analog hasil pemrosesan ke Galeri HP (MediaStore DCIM).
+ * - Pada APK/Production Build: Langsung tersimpan otomatis ke Galeri album "Renu Biru Cam".
+ * - Pada Expo Go: Membuka dialog Android native (Simpan ke Perangkat / Galeri / Foto).
+ */
+export async function saveProcessedPhotoToGallery(
+  uri: string
+): Promise<CaptureResult> {
+  try {
+    let savedDirectly = false;
+    try {
+      const asset = await MediaLibrary.createAssetAsync(uri);
+      savedDirectly = true;
+      try {
+        const album = await MediaLibrary.getAlbumAsync('Renu Biru Cam');
+        if (album == null) {
+          await MediaLibrary.createAlbumAsync('Renu Biru Cam', asset, false);
+        } else {
+          await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
+        }
+      } catch {
+        // Scoped storage fallback
+      }
+    } catch {
+      // Di Expo Go, MediaLibrary dibatasi oleh Google Play Policy
+      savedDirectly = false;
+    }
+
+    // Fallback untuk Expo Go
+    if (!savedDirectly) {
+      const isAvailable = await Sharing.isAvailableAsync();
+      if (isAvailable) {
+        await Sharing.shareAsync(uri, {
+          dialogTitle: 'Simpan Foto Analog ke Galeri HP',
+          mimeType: 'image/jpeg',
+          UTI: 'public.jpeg',
+        });
+      }
+    }
+
+    return {
+      success: true,
+      uri,
+    };
+  } catch (err: any) {
+    console.log('Save photo exception:', err?.message || err);
+    return {
+      success: false,
+      error: err?.message || 'Terjadi kesalahan saat menyimpan foto.',
+    };
+  }
+}
+
+/**
  * Mengambil foto langsung dari sensor kamera native hardware.
  * - Pada APK/Production Build: Langsung tersimpan otomatis ke Galeri (MediaStore DCIM).
  * - Pada Expo Go: Membuka dialog Android native (Simpan ke Perangkat / Galeri / Foto).
